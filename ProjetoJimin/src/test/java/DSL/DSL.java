@@ -40,10 +40,42 @@ public class DSL {
 		email.sendKeys("teste@teste.com");
 		WebElement senha = driver.findElement(By.id(idSenha));
 		senha.sendKeys("teste123");
-		WebElement botao = driver.findElement(By.xpath("//*[text()='" + textoBotao + "']"));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement botao = wait.until(ExpectedConditions.elementToBeClickable(
+		    By.xpath("//form[@id='form-login']//button[text()='Login']"))
+		);
+		botao.click();		
+	}
+	
+	public void voltaPaginaInicial() {
+		//WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement botao = driver.findElement(
+				By.xpath("//div[@id='logo']//img[@class='img-fluid']"));
 		botao.click();
 	}
 	
+	public WebElement encontraCarrossel() {
+		WebElement carrossel = driver.findElement(By.id("carousel-banner-0"));
+		//WebElement carrossel = driver.findElement(By.xpath("//div[@id='carousel-banner-0']//div[@class='carousel-item active']//img[@class='img-fluid']"));
+		return carrossel;
+	}
+	
+	public String retornaImagemCarrossel(String idCarrossel) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement imagemAtual = wait.until(
+		        ExpectedConditions.visibilityOfElementLocated(
+		        		By.cssSelector("#" + idCarrossel + " .carousel-item.active img")
+		        )
+		    );
+		
+		return imagemAtual.getAttribute("src");
+		
+	}
+	
+	public String retornaTitulo() {
+		String titulo = driver.getTitle();
+		return titulo;
+	}
 	
 	
 }

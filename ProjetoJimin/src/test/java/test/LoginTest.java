@@ -1,5 +1,7 @@
 package test;
 
+import java.time.Duration;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -8,6 +10,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import DSL.DSL;
 import pages.LoginPage;
@@ -44,6 +47,33 @@ public class LoginTest {
 		//dsl.clicaLink("Login");
 		Assert.assertEquals("Account Login", driver.getTitle());
 		dsl.logaSistema("input-email", "input-password","Login");
+		dsl.voltaPaginaInicial();
+		Assert.assertEquals("img-fluid", dsl.encontraCarrossel().getAttribute("Class")); 
+	}
+	
+	@Test
+	public void deveVoltarTelaInicial() {
+		dsl.voltaPaginaInicial();
+	}
+	
+	@Test
+	public void deveVerificarCarrossel() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		String primeiraImagem = dsl.retornaImagemCarrossel("carousel-banner-0");
+		wait.until(driver1 -> {
+			String imagemAtual = dsl.retornaImagemCarrossel("carousel-banner-0");
+			return !imagemAtual.equals(primeiraImagem);
+		});
+		String segundaImagem= dsl.retornaImagemCarrossel("carousel-banner-0");
+		
+		Assert.assertNotEquals("A imagem do carrossel nao mudou!", primeiraImagem, segundaImagem);
+		
+		//Assert.assertEquals("carousel slide", dsl.encontraCarrossel().getAttribute("class")); 
+	}
+	
+	@Test
+	public void deveValidarTitulo() {
+		Assert.assertEquals("Your Store", dsl.retornaTitulo());
 	}
 	
 	/*@Test
