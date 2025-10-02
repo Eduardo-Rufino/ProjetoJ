@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import DSL.DSL;
 
@@ -18,6 +19,16 @@ public class LoginPage {
 		dsl = new DSL(driver);
 	}
 
+	public void logaSistema(WebDriver driver) {
+		this.driver = driver;
+		dsl.clicaDropdown("My Account", "Login");
+		//dsl.clicaLink("Login");
+		Assert.assertEquals("Account Login", driver.getTitle());
+		dsl.logaSistema("input-email", "input-password","Login");
+		dsl.voltaPaginaInicial();
+	}
+	
+	
 	/*
 	@Test
 	public void clicaLogin() {

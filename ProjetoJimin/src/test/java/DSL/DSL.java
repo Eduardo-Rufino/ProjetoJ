@@ -77,5 +77,43 @@ public class DSL {
 		return titulo;
 	}
 	
+	public void clicaTelefone() {
+		WebElement span = driver.findElement(By.xpath("//li[@class='list-inline-item']//span[@class='d-none d-lg-inline']"));
+		span.click();
+	}
+	
+	public void clicaWishList() {
+		WebElement span = driver.findElement(By.id("wishlist-total"));
+		span.click();
+	}
+	
+	public void clicaCarrinho() {
+		WebElement span = driver.findElement(By.xpath("//li[@class='list-inline-item']//a[@title='Shopping Cart']"));
+		span.click();
+	}
+	
+	public void clicaMoeda() {
+		WebElement span = driver.findElement(By.xpath("//form[@id='form-currency']//span[@class='d-none d-md-inline']"));
+		span.click();
+	}
+	
+	public void trocaMoeda(String moeda) {
+		WebElement botao = null;
+		if(moeda == "Euro") {
+			botao = driver.findElement(By.xpath("//a[@href='EUR']"));
+		}
+		if(moeda == "Libra") {
+			botao = driver.findElement(By.xpath("//a[@href='GBP']"));
+		}
+		if(moeda == "Dolar") {
+			botao = driver.findElement(By.xpath("//a[@href='USD']"));
+		}
+		botao.click();
+	}
+	
+	public String retornaMoeda() {
+		String moeda = driver.findElement(By.cssSelector(".dropdown-toggle strong")).getText();
+		return moeda;
+	}
 	
 }

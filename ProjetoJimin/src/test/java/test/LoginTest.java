@@ -10,6 +10,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import DSL.DSL;
@@ -75,6 +76,43 @@ public class LoginTest {
 	public void deveValidarTitulo() {
 		Assert.assertEquals("Your Store", dsl.retornaTitulo());
 	}
+	
+	@Test
+	public void validaMenuSuperior() {
+		page.logaSistema(driver);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+		wait.until(ExpectedConditions.titleIs("Your Store"));
+		dsl.clicaTelefone();
+		Assert.assertEquals("Contact Us", dsl.retornaTitulo());
+		dsl.clicaWishList();
+		Assert.assertEquals("My Wishlist", dsl.retornaTitulo());
+		dsl.clicaCarrinho();
+		Assert.assertEquals("Shopping Cart", dsl.retornaTitulo());
+		dsl.clicaMoeda();
+		dsl.trocaMoeda("Dolar");
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(
+				By.cssSelector("div.dropdown a strong"), "$"
+			 )
+		);
+		Assert.assertEquals("$", dsl.retornaMoeda());
+		dsl.clicaMoeda();
+		dsl.trocaMoeda("Libra");
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(
+					 By.cssSelector("div.dropdown a strong"), "£"
+			 )
+		);
+		Assert.assertEquals("£", dsl.retornaMoeda());
+		dsl.clicaMoeda();
+		dsl.trocaMoeda("Euro");
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(
+					 By.cssSelector("div.dropdown a strong"), "€"
+			 )
+		);
+		Assert.assertEquals("€", dsl.retornaMoeda());
+	}
+	
+	
+	
 	
 	/*@Test
 	public void teste() {
