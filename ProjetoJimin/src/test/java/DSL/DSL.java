@@ -1,8 +1,11 @@
 package DSL;
 
+import java.util.List;
 import java.time.Duration;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -20,11 +23,16 @@ public class DSL {
 		driver.findElement(By.linkText(link)).click();
 	}
 	
-	public void clicaDropdown(String textoBotao, String textoItem) {
-	    // 1️⃣ Clicar no botão que abre o dropdown (pode ser span, div, etc.)
-	    WebElement botao = driver.findElement(By.xpath("//*[text()='" + textoBotao + "']"));
+	public void expandeDropDown(String textoBotao) {
+		WebElement botao = driver.findElement(By.xpath("//*[text()='" + textoBotao + "']"));
 	    botao.click();
-
+	}
+	
+	public void clicaDropdown(String textoItem) {
+	    // 1️⃣ Clicar no botão que abre o dropdown (pode ser span, div, etc.)
+	    //WebElement botao = driver.findElement(By.xpath("//*[text()='" + textoBotao + "']"));
+	    //botao.click();
+		
 	    // 2️⃣ Esperar o item dentro do dropdown ficar clicável (pode ser a, li, span, etc.)
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 	    WebElement item = wait.until(ExpectedConditions.elementToBeClickable(
@@ -55,8 +63,8 @@ public class DSL {
 	}
 	
 	public WebElement encontraCarrossel() {
-		WebElement carrossel = driver.findElement(By.id("carousel-banner-0"));
-		//WebElement carrossel = driver.findElement(By.xpath("//div[@id='carousel-banner-0']//div[@class='carousel-item active']//img[@class='img-fluid']"));
+		//WebElement carrossel = driver.findElement(By.id("carousel-banner-0"));
+		WebElement carrossel = driver.findElement(By.xpath("//div[@id='carousel-banner-0']//div[@class='carousel-item active']//img[@class='img-fluid']"));
 		return carrossel;
 	}
 	
@@ -114,6 +122,32 @@ public class DSL {
 	public String retornaMoeda() {
 		String moeda = driver.findElement(By.cssSelector(".dropdown-toggle strong")).getText();
 		return moeda;
+	}
+	
+	public void comparaValores(String textoEsperado, String textoAtual) {
+		Assert.assertEquals(textoEsperado, textoAtual);
+	}
+	
+	public void clicaCategoria(String classeDropdown) {
+	    // Ajuste do seletor CSS para múltiplas classes
+	    List<WebElement> itens = driver.findElements(By.cssSelector("." + classeDropdown.replace(" ", "." ) + " div ul li a"));
+
+	    for (WebElement item : itens) {
+	        String texto = item.getText();
+
+	        int numeroProdutos = 0;
+	        if (texto.matches(".*\\(\\d+\\).*")) {
+	            String numero = texto.replaceAll(".*\\((\\d+)\\).*", "$1");
+	            numeroProdutos = Integer.parseInt(numero);
+	            System.out.println("Número de produtos: " + numeroProdutos);
+	        }
+
+	        if (numeroProdutos > 0) {
+	            System.out.println("Categoria " + texto + " tem produtos, clicando...");
+	            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", item);
+	            break; // opcional: se quiser clicar somente no primeiro item com produtos
+	        }
+	    }
 	}
 	
 }

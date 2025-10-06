@@ -21,7 +21,8 @@ public class LoginPage {
 
 	public void logaSistema(WebDriver driver) {
 		this.driver = driver;
-		dsl.clicaDropdown("My Account", "Login");
+		dsl.expandeDropDown("My Account");		
+		dsl.clicaDropdown("Login");
 		//dsl.clicaLink("Login");
 		Assert.assertEquals("Account Login", driver.getTitle());
 		dsl.logaSistema("input-email", "input-password","Login");

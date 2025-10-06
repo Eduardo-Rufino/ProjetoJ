@@ -44,12 +44,14 @@ public class LoginTest {
 	public void deveEntrarNoLogin() {
 		//page.clicaLogin();
 		
-		dsl.clicaDropdown("My Account", "Login");
+		dsl.expandeDropDown("My Account");
+		
+		dsl.clicaDropdown("Login");
 		//dsl.clicaLink("Login");
-		Assert.assertEquals("Account Login", driver.getTitle());
+		dsl.comparaValores("Account Login", driver.getTitle());
 		dsl.logaSistema("input-email", "input-password","Login");
 		dsl.voltaPaginaInicial();
-		Assert.assertEquals("img-fluid", dsl.encontraCarrossel().getAttribute("Class")); 
+		dsl.comparaValores("img-fluid", dsl.encontraCarrossel().getAttribute("Class")); 
 	}
 	
 	@Test
@@ -67,14 +69,14 @@ public class LoginTest {
 		});
 		String segundaImagem= dsl.retornaImagemCarrossel("carousel-banner-0");
 		
-		Assert.assertNotEquals("A imagem do carrossel nao mudou!", primeiraImagem, segundaImagem);
+		dsl.comparaValores(primeiraImagem, segundaImagem);
 		
 		//Assert.assertEquals("carousel slide", dsl.encontraCarrossel().getAttribute("class")); 
 	}
 	
 	@Test
 	public void deveValidarTitulo() {
-		Assert.assertEquals("Your Store", dsl.retornaTitulo());
+		dsl.comparaValores("Your Store", dsl.retornaTitulo());
 	}
 	
 	@Test
@@ -83,33 +85,41 @@ public class LoginTest {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 		wait.until(ExpectedConditions.titleIs("Your Store"));
 		dsl.clicaTelefone();
-		Assert.assertEquals("Contact Us", dsl.retornaTitulo());
+		dsl.comparaValores("Contact Us", dsl.retornaTitulo());
 		dsl.clicaWishList();
-		Assert.assertEquals("My Wishlist", dsl.retornaTitulo());
+		dsl.comparaValores("My Wishlist", dsl.retornaTitulo());
 		dsl.clicaCarrinho();
-		Assert.assertEquals("Shopping Cart", dsl.retornaTitulo());
+		dsl.comparaValores("Shopping Cart", dsl.retornaTitulo());
 		dsl.clicaMoeda();
 		dsl.trocaMoeda("Dolar");
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(
 				By.cssSelector("div.dropdown a strong"), "$"
 			 )
 		);
-		Assert.assertEquals("$", dsl.retornaMoeda());
+		dsl.comparaValores("$", dsl.retornaMoeda());
 		dsl.clicaMoeda();
 		dsl.trocaMoeda("Libra");
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(
 					 By.cssSelector("div.dropdown a strong"), "£"
 			 )
 		);
-		Assert.assertEquals("£", dsl.retornaMoeda());
+		dsl.comparaValores("£", dsl.retornaMoeda());
 		dsl.clicaMoeda();
 		dsl.trocaMoeda("Euro");
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(
 					 By.cssSelector("div.dropdown a strong"), "€"
 			 )
 		);
-		Assert.assertEquals("€", dsl.retornaMoeda());
+		dsl.comparaValores("€", dsl.retornaMoeda());
 	}
+	
+	@Test
+	public void validaCategoriasPrincipais() {
+		dsl.expandeDropDown("Desktops");
+		dsl.clicaCategoria("dropdown-menu dropdown-column-1 show");
+	}
+	
+	
 	
 	
 	
