@@ -23,6 +23,8 @@ public class DSL {
 		driver.findElement(By.linkText(link)).click();
 	}
 	
+	
+	/* Clica no botão principal do dropdown para expandir o menu */
 	public void expandeDropDown(String textoBotao) {
 		WebElement botao = driver.findElement(By.xpath("//*[text()='" + textoBotao + "']"));
 	    botao.click();
@@ -128,7 +130,7 @@ public class DSL {
 		Assert.assertEquals(textoEsperado, textoAtual);
 	}
 	
-	public void clicaCategoria(String classeDropdown) {
+	/*public void clicaCategoria(String classeDropdown) {
 	    // Ajuste do seletor CSS para múltiplas classes
 	    List<WebElement> itens = driver.findElements(By.cssSelector("." + classeDropdown.replace(" ", "." ) + " div ul li a"));
 
@@ -148,6 +150,79 @@ public class DSL {
 	            break; // opcional: se quiser clicar somente no primeiro item com produtos
 	        }
 	    }
+	}*/
+	
+	/* percorre os itens de um dropdown e clica no primeiro que tiver produtos*/
+	public void clicaCategoria(WebElement menuAberto) {
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+	    // Captura novamente os itens ativos do menu para evitar StaleElementReference
+	    List<WebElement> itens = menuAberto.findElements(By.cssSelector("div ul li a"));
+
+	    for (int i = 0; i < itens.size(); i++) {
+	        WebElement item = menuAberto.findElements(By.cssSelector("div ul li a")).get(i); // recaptura
+	        String texto = item.getText();
+
+	        int numeroProdutos = 0;
+	        if (texto.matches(".*\\(\\d+\\).*")) {
+	            String numero = texto.replaceAll(".*\\((\\d+)\\).*", "$1");
+	            numeroProdutos = Integer.parseInt(numero);
+	            System.out.println("Número de produtos: " + numeroProdutos);
+	        }
+
+	        if (numeroProdutos > 0) {
+	            System.out.println("Categoria " + texto + " tem produtos, clicando...");
+	            // Usa JavaScript para garantir o clique mesmo em elementos complexos
+	            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", item);
+
+	            // Espera até que algum elemento da nova página esteja visível (exemplo: título ou lista de produtos)
+	            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".product-layout, .product-thumb, .product-list")));
+	            break; // Clica apenas no primeiro item com produtos
+	        }
+	    }
 	}
+
+	public void validaTodosOsDropdowns() {
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+	    // Captura todos os links principais de dropdown (ex: Desktops, Components, etc.)
+	    List<WebElement> dropdowns = driver.findElements(By.cssSelector(".nav-item.dropdown > a"));
+
+	    for (int i = 0; i < dropdowns.size(); i++) {
+	        // ⚠️ Recaptura a lista de dropdowns, pois o DOM pode mudar
+	        dropdowns = driver.findElements(By.cssSelector(".nav-item.dropdown > a"));
+	        WebElement dropdown = dropdowns.get(i);
+
+	        String nomeCategoria = dropdown.getText();
+	        System.out.println("\n=== Testando categoria: " + nomeCategoria + " ===");
+
+	        // Expande o dropdown
+	        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", dropdown);
+
+	        // Espera até que o menu seja visível
+	        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".dropdown-menu.show")));
+
+	        // Captura o menu aberto correspondente
+	        List<WebElement> menus = driver.findElements(By.cssSelector(".dropdown-menu.show"));
+	        if (!menus.isEmpty()) {
+	            WebElement menuAberto = menus.get(0);
+
+	            // Chama o método que valida subcategorias e clica em uma que tenha produtos
+	            clicaCategoria(menuAberto);
+	        } else {
+	            System.out.println("⚠️ Nenhum menu encontrado para " + nomeCategoria);
+	        }
+
+	        // Volta para a página inicial antes de testar o próximo dropdown
+	        driver.navigate().back();
+
+	        // Espera até que o dropdown principal esteja visível novamente
+	        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".nav-item.dropdown > a")));
+	    }
+
+	    System.out.println("\n✅ Validação de todos os dropdowns finalizada!");
+	}
+
+
 	
 }

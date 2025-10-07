@@ -114,9 +114,8 @@ public class LoginTest {
 	}
 	
 	@Test
-	public void validaCategoriasPrincipais() {
-		dsl.expandeDropDown("Desktops");
-		dsl.clicaCategoria("dropdown-menu dropdown-column-1 show");
+	public void validaCategoriasPrincipais() throws InterruptedException {
+		dsl.validaTodosOsDropdowns();
 	}
 	
 	
