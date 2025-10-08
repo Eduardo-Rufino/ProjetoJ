@@ -130,6 +130,10 @@ public class DSL {
 		Assert.assertEquals(textoEsperado, textoAtual);
 	}
 	
+	public void comparaValoresDiferentes(String valor1, String valor2) {
+	    Assert.assertNotEquals(valor1, valor2);
+	}
+	
 	/*public void clicaCategoria(String classeDropdown) {
 	    // Ajuste do seletor CSS para múltiplas classes
 	    List<WebElement> itens = driver.findElements(By.cssSelector("." + classeDropdown.replace(" ", "." ) + " div ul li a"));
@@ -183,12 +187,15 @@ public class DSL {
 	}
 
 	public void validaTodosOsDropdowns() {
+		
+		WebElement produto;
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 	    // Captura todos os links principais de dropdown (ex: Desktops, Components, etc.)
 	    List<WebElement> dropdowns = driver.findElements(By.cssSelector(".nav-item.dropdown > a"));
 
 	    for (int i = 0; i < dropdowns.size(); i++) {
+	    	produto = null;
 	        // ⚠️ Recaptura a lista de dropdowns, pois o DOM pode mudar
 	        dropdowns = driver.findElements(By.cssSelector(".nav-item.dropdown > a"));
 	        WebElement dropdown = dropdowns.get(i);
@@ -212,7 +219,7 @@ public class DSL {
 	        } else {
 	            System.out.println("⚠️ Nenhum menu encontrado para " + nomeCategoria);
 	        }
-
+	        
 	        // Volta para a página inicial antes de testar o próximo dropdown
 	        driver.navigate().back();
 
@@ -223,6 +230,12 @@ public class DSL {
 	    System.out.println("\n✅ Validação de todos os dropdowns finalizada!");
 	}
 
+	public void clicaCarrossel(String nomeCarrossel) {
+		WebElement botao = driver.findElement(
+			    By.cssSelector("button.carousel-control-next[data-bs-target='#carousel-banner-0']")
+			);
+			botao.click();
+	}
 
 	
 }
