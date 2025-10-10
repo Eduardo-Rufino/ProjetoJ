@@ -236,6 +236,15 @@ public class DSL {
 			);
 			botao.click();
 	}
+	
+	public void pesquisaProduto(String produto) {
+		WebElement input = driver.findElement(By.cssSelector(".input-group.mb-3 .form-control.form-control-lg"));
+		input.sendKeys(produto);
+		WebElement botao = driver.findElement(By.cssSelector(".input-group.mb-3 .btn.btn-light.btn-lg"));
+		botao.click();
+	}
+	
+	
 
 	
 }

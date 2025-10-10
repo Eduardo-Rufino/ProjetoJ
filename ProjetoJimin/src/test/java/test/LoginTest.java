@@ -50,6 +50,8 @@ public class LoginTest {
 		//dsl.clicaLink("Login");
 		dsl.comparaValores("Account Login", driver.getTitle());
 		dsl.logaSistema("input-email", "input-password","Login");
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.titleContains("My Account"));
 		dsl.voltaPaginaInicial();
 		dsl.comparaValores("img-fluid", dsl.encontraCarrossel().getAttribute("Class")); 
 	}
@@ -80,7 +82,7 @@ public class LoginTest {
 	}
 	
 	@Test
-	public void validaMenuSuperior() {
+	public void devevalidarMenuSuperior() {
 		page.logaSistema(driver);
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 		wait.until(ExpectedConditions.titleIs("Your Store"));
@@ -114,13 +116,13 @@ public class LoginTest {
 	}
 	
 	@Test
-	public void validaCategoriasPrincipais() throws InterruptedException {
+	public void devevalidarCategoriasPrincipais() throws InterruptedException {
 		dsl.validaTodosOsDropdowns();
 	}
 	
 	
 	@Test
-	public void testaBotaoCarrossel() {
+	public void devetestarBotaoCarrossel() {
 	    // Captura a primeira imagem
 	    String primeiraImagem = dsl.retornaImagemCarrossel("carousel-banner-0");
 
@@ -141,6 +143,29 @@ public class LoginTest {
 	    dsl.comparaValoresDiferentes(primeiraImagem, segundaImagem);
 	}
 	
+	@Test
+	public void devetetsarProdutoExistente() {
+		deveEntrarNoLogin();
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.titleIs("Your Store"));
+		dsl.pesquisaProduto("iMac");
+		wait.until(ExpectedConditions.titleContains("Search"));
+		String produto = driver.findElement(By.cssSelector(".content .description a")).getText();
+		
+		dsl.comparaValores("iMac", produto);		
+	}
+	
+	@Test
+	public void devetestarProdutoInexistente() {
+		deveEntrarNoLogin();
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.titleIs("Your Store"));
+		dsl.pesquisaProduto("Prduto que nao existe");
+		wait.until(ExpectedConditions.titleContains("Search"));
+		String texto = driver.findElement(By.cssSelector("#product-search p")).getText();
+		
+		dsl.comparaValores("There is no product that matches the search criteria.", texto);
+	}
 	
 	
 	
