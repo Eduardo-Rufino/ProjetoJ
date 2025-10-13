@@ -244,6 +244,45 @@ public class DSL {
 		botao.click();
 	}
 	
+	public void clicaProduto() {
+		WebElement produto = driver.findElement(By.cssSelector("#product-list .col.mb-3 .product-thumb .content .description h4 a"));
+		produto.click();
+	}
+	
+	public boolean validaNomeProduto() {
+		String nome = driver.findElement(By.cssSelector("#content .row.mb-3 .col-sm h1")).getText();
+		if(!nome.isEmpty()) {
+			System.out.println(nome);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public boolean validaInformacaoProduto(String idDiv, String textoInicial) {
+		String informacao = driver.findElement(By.xpath("//div[@id='" + idDiv + "']//li[starts-with(normalize-space(.), '" + textoInicial + "')]")).getText();
+		//String marca = driver.findElement(By.xpath("//li[starts-with(normalize-space(.), 'Brand:')]")).getText();
+		if(!informacao.isEmpty()) {
+			System.out.println(informacao);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public boolean validaPreçoProduto() {
+		String preco = driver.findElement(By.cssSelector("#content .row.mb-3 .col-sm h2 span")).getText();
+		if(!preco.isEmpty()) {
+			System.out.println(preco);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
 	
 
 	

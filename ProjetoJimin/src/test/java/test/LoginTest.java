@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -83,7 +84,7 @@ public class LoginTest {
 	
 	@Test
 	public void devevalidarMenuSuperior() {
-		page.logaSistema(driver);
+		deveEntrarNoLogin();
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 		wait.until(ExpectedConditions.titleIs("Your Store"));
 		dsl.clicaTelefone();
@@ -144,7 +145,7 @@ public class LoginTest {
 	}
 	
 	@Test
-	public void devetetsarProdutoExistente() {
+	public void devetestarProdutoExistente() {
 		deveEntrarNoLogin();
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		wait.until(ExpectedConditions.titleIs("Your Store"));
@@ -165,6 +166,17 @@ public class LoginTest {
 		String texto = driver.findElement(By.cssSelector("#product-search p")).getText();
 		
 		dsl.comparaValores("There is no product that matches the search criteria.", texto);
+	}
+	
+	@Test
+	public void deveValidarInformacoesProduto() {
+		devetestarProdutoExistente();
+		dsl.clicaProduto();
+		Assertions.assertTrue(dsl.validaNomeProduto(), "O nome do produto está vazio!");
+		Assertions.assertTrue(dsl.validaInformacaoProduto("content", "Brand"), "A marca do produto esta vazia!");
+		Assertions.assertTrue(dsl.validaInformacaoProduto("content", "Availability"));
+		Assertions.assertTrue(dsl.validaPreçoProduto(), "O preço do produto esta vazio!");
+		Assertions.assertTrue(dsl.validaInformacaoProduto("content", "Ex Tax"));		
 	}
 	
 	
