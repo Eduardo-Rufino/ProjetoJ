@@ -41,6 +41,7 @@ public class LoginTest {
 		//driver.quit();
 	}
 	
+	// Loga no site com as informacoes que forem passadas
 	@Test
 	public void deveEntrarNoLogin() {
 		//page.clicaLogin();
@@ -57,11 +58,13 @@ public class LoginTest {
 		dsl.comparaValores("img-fluid", dsl.encontraCarrossel().getAttribute("Class")); 
 	}
 	
+	// retorna para a pagina inicial
 	@Test
 	public void deveVoltarTelaInicial() {
 		dsl.voltaPaginaInicial();
 	}
 	
+	// verifica se a imagem do carrossel esta funcionando normalmente e trocando de imagem
 	@Test
 	public void deveVerificarCarrossel() {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -77,11 +80,13 @@ public class LoginTest {
 		//Assert.assertEquals("carousel slide", dsl.encontraCarrossel().getAttribute("class")); 
 	}
 	
+	// Verifica se o titulo da pagina é o esperado.
 	@Test
 	public void deveValidarTitulo() {
 		dsl.comparaValores("Your Store", dsl.retornaTitulo());
 	}
 	
+	//Verifica se todos os menus da barra superior estao funcionando. Clica em cada um deles e verifica se o titulo é o esperado ao trocar de pagina
 	@Test
 	public void devevalidarMenuSuperior() {
 		deveEntrarNoLogin();
@@ -116,14 +121,15 @@ public class LoginTest {
 		dsl.comparaValores("€", dsl.retornaMoeda());
 	}
 	
+	// Verifica cada uma das categorias principais da pagina e quais subcategorias tem produtos cadastrados
 	@Test
 	public void devevalidarCategoriasPrincipais() throws InterruptedException {
 		dsl.validaTodosOsDropdowns();
 	}
 	
-	
+	//Clica na seta do carrossel para verificar se esta trocando de imagem normalmente ao clicar nele
 	@Test
-	public void devetestarBotaoCarrossel() {
+	public void deveTestarBotaoCarrossel() {
 	    // Captura a primeira imagem
 	    String primeiraImagem = dsl.retornaImagemCarrossel("carousel-banner-0");
 
@@ -144,6 +150,7 @@ public class LoginTest {
 	    dsl.comparaValoresDiferentes(primeiraImagem, segundaImagem);
 	}
 	
+	// Envia um nome de produto e verifica se esse produto se encontra cadastrado no site
 	@Test
 	public void devetestarProdutoExistente() {
 		deveEntrarNoLogin();
@@ -156,6 +163,7 @@ public class LoginTest {
 		dsl.comparaValores("iMac", produto);		
 	}
 	
+	// Envia um nome de produto e verifica se esse produto nao se encontra cadastrado no site
 	@Test
 	public void devetestarProdutoInexistente() {
 		deveEntrarNoLogin();
@@ -168,6 +176,7 @@ public class LoginTest {
 		dsl.comparaValores("There is no product that matches the search criteria.", texto);
 	}
 	
+	// Valida se as informacoes principais do produto estao preenchidas, como marca, disponibilidade e nome.
 	@Test
 	public void deveValidarInformacoesProduto() {
 		devetestarProdutoExistente();

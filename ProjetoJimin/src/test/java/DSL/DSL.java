@@ -19,6 +19,7 @@ public class DSL {
 		this.driver = driver;
 	}
 
+	// Recebe uma string com o link e clica nele
 	public void clicaLink(String link) {
 		driver.findElement(By.linkText(link)).click();
 	}
@@ -45,6 +46,7 @@ public class DSL {
 	    item.click();
 	}
 	
+	// loga no sistema recebendo uma String para o email, uma para a senha e uma para o botão de logar
 	public void logaSistema(String idemail, String idSenha, String textoBotao) {
 		WebElement email = driver.findElement(By.id(idemail));
 		email.sendKeys("teste@teste.com");
@@ -57,6 +59,7 @@ public class DSL {
 		botao.click();		
 	}
 	
+	// clica no icone da logo do site, o que faz retornar para a página inicial
 	public void voltaPaginaInicial() {
 		//WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		WebElement botao = driver.findElement(
@@ -64,12 +67,14 @@ public class DSL {
 		botao.click();
 	}
 	
+	// enocntra um elemento de carrossel na página
 	public WebElement encontraCarrossel() {
 		//WebElement carrossel = driver.findElement(By.id("carousel-banner-0"));
 		WebElement carrossel = driver.findElement(By.xpath("//div[@id='carousel-banner-0']//div[@class='carousel-item active']//img[@class='img-fluid']"));
 		return carrossel;
 	}
 	
+	// Recebe uma string com o id do carrossel e retorna o link da imagem que está no carrossel no momento
 	public String retornaImagemCarrossel(String idCarrossel) {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		WebElement imagemAtual = wait.until(
@@ -82,31 +87,38 @@ public class DSL {
 		
 	}
 	
+	// retorna o titulo da pagina
 	public String retornaTitulo() {
 		String titulo = driver.getTitle();
 		return titulo;
 	}
 	
+	// clica no botao de telefone na barra superior da pagina
 	public void clicaTelefone() {
 		WebElement span = driver.findElement(By.xpath("//li[@class='list-inline-item']//span[@class='d-none d-lg-inline']"));
 		span.click();
 	}
 	
+	// clica no botao de wishlist na barra superior da pagina
 	public void clicaWishList() {
 		WebElement span = driver.findElement(By.id("wishlist-total"));
 		span.click();
 	}
 	
+	// clica no botao de carrinho da barra superior da pagina
 	public void clicaCarrinho() {
 		WebElement span = driver.findElement(By.xpath("//li[@class='list-inline-item']//a[@title='Shopping Cart']"));
 		span.click();
 	}
 	
+	//  clica no menu de moeda no topo da pagina para abrir a lista disponivel
 	public void clicaMoeda() {
 		WebElement span = driver.findElement(By.xpath("//form[@id='form-currency']//span[@class='d-none d-md-inline']"));
 		span.click();
 	}
 	
+	
+	// depois de aberta a lista de moedas disponivel, seleciona uma delas de acordo com a String recebida
 	public void trocaMoeda(String moeda) {
 		WebElement botao = null;
 		if(moeda == "Euro") {
@@ -121,15 +133,18 @@ public class DSL {
 		botao.click();
 	}
 	
+	// Retorna o icone da moeda selecionada na barra superior da pagina
 	public String retornaMoeda() {
 		String moeda = driver.findElement(By.cssSelector(".dropdown-toggle strong")).getText();
 		return moeda;
 	}
 	
+	// Compara dois valores recebidos, para reaproveitar o assertEquals
 	public void comparaValores(String textoEsperado, String textoAtual) {
 		Assert.assertEquals(textoEsperado, textoAtual);
 	}
 	
+	// confirma se os dois valores recebidos sao diferentes, para reaproveritar o assertNotEquals
 	public void comparaValoresDiferentes(String valor1, String valor2) {
 	    Assert.assertNotEquals(valor1, valor2);
 	}
@@ -186,6 +201,7 @@ public class DSL {
 	    }
 	}
 
+	// percorre todos as categorias principais da página, entra nas subcategorias e entrana pagina de subcategorias que tiverem algum produto cadastrado e valida se realmente tem algum produto aprensentado na pagina
 	public void validaTodosOsDropdowns() {
 		
 		WebElement produto;
@@ -230,6 +246,7 @@ public class DSL {
 	    System.out.println("\n✅ Validação de todos os dropdowns finalizada!");
 	}
 
+	// Recebe o nome de um carrossel e clica no botao de proxima imagem desse carrossel
 	public void clicaCarrossel(String nomeCarrossel) {
 		WebElement botao = driver.findElement(
 			    By.cssSelector("button.carousel-control-next[data-bs-target='#carousel-banner-0']")
@@ -237,6 +254,7 @@ public class DSL {
 			botao.click();
 	}
 	
+	// recebe o nome de um produto, escreve ele na caixa de pesquisa e clica no botao de pesquisar
 	public void pesquisaProduto(String produto) {
 		WebElement input = driver.findElement(By.cssSelector(".input-group.mb-3 .form-control.form-control-lg"));
 		input.sendKeys(produto);
@@ -244,11 +262,13 @@ public class DSL {
 		botao.click();
 	}
 	
+	
 	public void clicaProduto() {
 		WebElement produto = driver.findElement(By.cssSelector("#product-list .col.mb-3 .product-thumb .content .description h4 a"));
 		produto.click();
 	}
 	
+	// Valida se o nome do produto da pagina nao esta vazio
 	public boolean validaNomeProduto() {
 		String nome = driver.findElement(By.cssSelector("#content .row.mb-3 .col-sm h1")).getText();
 		if(!nome.isEmpty()) {
@@ -260,6 +280,7 @@ public class DSL {
 		}
 	}
 	
+	// Recebe uma div para especificar onde produrar e o texto inicial para definir qual a informacao que deve ser validada, depois verifica se a infoamação apos o ":" nao esta vazio
 	public boolean validaInformacaoProduto(String idDiv, String textoInicial) {
 		String informacao = driver.findElement(By.xpath("//div[@id='" + idDiv + "']//li[starts-with(normalize-space(.), '" + textoInicial + "')]")).getText();
 		//String marca = driver.findElement(By.xpath("//li[starts-with(normalize-space(.), 'Brand:')]")).getText();
@@ -272,6 +293,7 @@ public class DSL {
 		}
 	}
 	
+	// verifica se o preço do produto nao esta vazio
 	public boolean validaPreçoProduto() {
 		String preco = driver.findElement(By.cssSelector("#content .row.mb-3 .col-sm h2 span")).getText();
 		if(!preco.isEmpty()) {
