@@ -169,11 +169,11 @@ public class LoginTest {
 		deveEntrarNoLogin();
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		wait.until(ExpectedConditions.titleIs("Your Store"));
-		dsl.pesquisaProduto("Prduto que nao existe");
+		dsl.pesquisaProduto("iMac");
 		wait.until(ExpectedConditions.titleContains("Search"));
 		String texto = driver.findElement(By.cssSelector("#product-search p")).getText();
 		
-		dsl.comparaValores("There is no product that matches the search criteria.", texto);
+		dsl.comparaValores("Nao existe nenhum produto com esse nome.", texto);
 	}
 	
 	// Valida se as informacoes principais do produto estao preenchidas, como marca, disponibilidade e nome.
@@ -187,6 +187,21 @@ public class LoginTest {
 		Assertions.assertTrue(dsl.validaPreçoProduto(), "O preço do produto esta vazio!");
 		Assertions.assertTrue(dsl.validaInformacaoProduto("content", "Ex Tax"));		
 	}
+	@Test
+	public void deveAdicionarProdutoCarrinho() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		deveEntrarNoLogin();
+		dsl.pesquisaProduto("iMac");
+		wait.until(ExpectedConditions.titleContains("Search"));
+		dsl.adicionaProdutoCarrinho("iMac");
+		dsl.validaProdutoCarrinho();
+	}
+	
+	@Test
+	public void teste() {
+		dsl.validaProdutoCarrinho();
+	}
+	
 	
 	
 	

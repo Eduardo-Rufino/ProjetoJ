@@ -8,7 +8,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Sleeper;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class DSL {
@@ -303,8 +305,34 @@ public class DSL {
 		else {
 			return false;
 		}
-	}
+	}	
 	
+	//ver uma forma melhor de pegar o produto correto depois
+	public void adicionaProdutoCarrinho(String productId) {
+        	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            // Localiza o botão "Add to Cart" pelo atributo formaction
+            WebElement addToCartButton = wait.until(ExpectedConditions.presenceOfElementLocated(
+                    By.xpath("//button[contains(@formaction, 'cart.add')]")
+            ));
+
+            // Scroll até o botão
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", addToCartButton);
+
+            // Opcional: aguardar até que esteja clicável
+            wait.until(ExpectedConditions.elementToBeClickable(addToCartButton));
+
+            // Clicar no botão
+            addToCartButton.click();
+    }
+	
+	public void validaProdutoCarrinho() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement botao = driver.findElement(By.cssSelector("#cart .btn.btn-lg.btn-dark.d-block.dropdown-toggle"));
+		botao.click();
+		WebElement alert = driver.findElement(By.cssSelector("#alert .alert.alert-success.alert-dismissible .btn-close"));
+		wait.until(ExpectedConditions.elementToBeClickable(alert));
+		alert.click();
+	}
 	
 
 	
