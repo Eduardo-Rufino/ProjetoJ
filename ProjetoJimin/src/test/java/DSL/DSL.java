@@ -1,5 +1,6 @@
 package DSL;
 
+import java.util.Arrays;
 import java.util.List;
 import java.time.Duration;
 
@@ -325,15 +326,52 @@ public class DSL {
             addToCartButton.click();
     }
 	
-	public void validaProdutoCarrinho() {
+	public void fechaAlertCarrinho() {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-		WebElement botao = driver.findElement(By.cssSelector("#cart .btn.btn-lg.btn-dark.d-block.dropdown-toggle"));
-		botao.click();
-		WebElement alert = driver.findElement(By.cssSelector("#alert .alert.alert-success.alert-dismissible .btn-close"));
+		WebElement alert = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#alert .alert.alert-success.alert-dismissible .btn-close")));
 		wait.until(ExpectedConditions.elementToBeClickable(alert));
 		alert.click();
 	}
 	
+	public void abreDropdownCarrinho() {
+		WebElement botao = driver.findElement(By.cssSelector("#cart"));
+		botao.click();
+		//WebElement produto = driver.findElement(By.cssSelector(".dropdown-menu.dropdown-menu-end.p-2.show"));
+		
+	}
+	
+	public boolean validaProdutoCarrinho(String nomeProduto) {
+		List<WebElement> produtosNoCarrinho = driver.findElements(By.xpath("//div[@id='cart']//table//td[2]/a"));
+		
+		for (WebElement produto: produtosNoCarrinho) {
+			if(produto.getText().equalsIgnoreCase(nomeProduto)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void validaListaProdutosCarrinho(String[] listaProdutos) {
+		List<String> produtosEsperados = Arrays.asList(listaProdutos);
+		List<WebElement> produtosNoCarrinho = driver.findElements(By.xpath("//div[@id='cart']//table//td[2]/a"));
+		
+		for(String esperado : produtosEsperados) {
+			boolean encontrado = false;
+			
+			for(WebElement produto : produtosNoCarrinho) {
+				if(produto.getText().equalsIgnoreCase(esperado)) {
+					encontrado = true;
+					break;
+				}
+			}
+			
+			if(!encontrado) {
+				System.out.println("Produto não encontrado no carrinho: " + esperado);
+			} else {
+				System.out.println("Produto encontrado: " + esperado);
+			}
+		}
+	}
 
 	
 }

@@ -187,19 +187,47 @@ public class LoginTest {
 		Assertions.assertTrue(dsl.validaPreçoProduto(), "O preço do produto esta vazio!");
 		Assertions.assertTrue(dsl.validaInformacaoProduto("content", "Ex Tax"));		
 	}
+	
 	@Test
 	public void deveAdicionarProdutoCarrinho() {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		deveEntrarNoLogin();
-		dsl.pesquisaProduto("iMac");
+		String produtoEsperado = "iMac";
+		dsl.pesquisaProduto(produtoEsperado);
 		wait.until(ExpectedConditions.titleContains("Search"));
-		dsl.adicionaProdutoCarrinho("iMac");
-		dsl.validaProdutoCarrinho();
+		dsl.adicionaProdutoCarrinho(produtoEsperado);
+		dsl.fechaAlertCarrinho();
+		dsl.abreDropdownCarrinho();
+		if(dsl.validaProdutoCarrinho(produtoEsperado)) {
+			System.out.println("Produto encontrado no carrinho!");
+		}
+		else {
+			System.out.println("produto NÃO encontrado no carrinho!");
+		}
+	}
+	
+	@Test
+	public void deveValidarListaProdutosCarrinho() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		deveEntrarNoLogin();
+		//String produtoEsperado1 = "iMac";
+		//String produtoEsperado2 = "Samsung SyncMaster 941BW";
+		String[] listaProdutos = {"iMac", "Samsung SyncMaster 941BW"};
+		dsl.pesquisaProduto(listaProdutos[0]);
+		wait.until(ExpectedConditions.titleContains("Search"));
+		dsl.adicionaProdutoCarrinho(listaProdutos[0]);
+		dsl.fechaAlertCarrinho();
+		dsl.pesquisaProduto(listaProdutos[1]);
+		wait.until(ExpectedConditions.titleContains("Search"));
+		dsl.adicionaProdutoCarrinho(listaProdutos[1]);
+		dsl.fechaAlertCarrinho();
+		dsl.abreDropdownCarrinho();
+		dsl.validaListaProdutosCarrinho(listaProdutos);
 	}
 	
 	@Test
 	public void teste() {
-		dsl.validaProdutoCarrinho();
+		dsl.abreDropdownCarrinho();
 	}
 	
 	
