@@ -309,6 +309,7 @@ public class DSL {
 	}	
 	
 	//ver uma forma melhor de pegar o produto correto depois
+	//Adiciona um produto ao carrinho
 	public void adicionaProdutoCarrinho(String productId) {
         	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             // Localiza o botão "Add to Cart" pelo atributo formaction
@@ -326,6 +327,7 @@ public class DSL {
             addToCartButton.click();
     }
 	
+	//Fecha alert de confirmação de produto adicionado ao carrinho
 	public void fechaAlertCarrinho() {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		WebElement alert = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#alert .alert.alert-success.alert-dismissible .btn-close")));
@@ -333,6 +335,7 @@ public class DSL {
 		alert.click();
 	}
 	
+	//Abre o dropdown com a lista de produtos 
 	public void abreDropdownCarrinho() {
 		WebElement botao = driver.findElement(By.cssSelector("#cart"));
 		botao.click();
@@ -340,6 +343,7 @@ public class DSL {
 		
 	}
 	
+	//Valida se o produto adicionado ao carrinho foi o mesmo que foi pesquisado
 	public boolean validaProdutoCarrinho(String nomeProduto) {
 		List<WebElement> produtosNoCarrinho = driver.findElements(By.xpath("//div[@id='cart']//table//td[2]/a"));
 		
@@ -351,6 +355,7 @@ public class DSL {
 		return false;
 	}
 	
+	//valida se os produtos adicionados ao carrinho foram os mesmos recebidos em um vetor
 	public void validaListaProdutosCarrinho(String[] listaProdutos) {
 		List<String> produtosEsperados = Arrays.asList(listaProdutos);
 		List<WebElement> produtosNoCarrinho = driver.findElements(By.xpath("//div[@id='cart']//table//td[2]/a"));
