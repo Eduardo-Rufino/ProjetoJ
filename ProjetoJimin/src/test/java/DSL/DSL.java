@@ -377,6 +377,33 @@ public class DSL {
 			}
 		}
 	}
+	
+	public void removeItemCarrinho() {
+		WebElement botao = driver.findElement(By.cssSelector(".table.table-striped.mb-2 form[data-oc-target='#cart']"));
+		botao.click();
+	}
+	
+	public void validaCarrinhoVazio() {
+		WebElement carrinho = driver.findElement(By.cssSelector("#cart .dropdown-menu.dropdown-menu-end.p-2.show li"));
+		if(carrinho.getText().equalsIgnoreCase("Your shopping cart is empty!")) {
+			System.out.println("O carrinho esta vazio");
+		} else {
+			System.out.println("Existem produtos no carrinho");
+		}
+		
+	}
+	
+	/*
+	public String retornaString(String css) {
+		String texto = driver.findElement(By.cssSelector(css)).getText();
+		return texto;
+	}
+	*/
+	
+	public String retornaString(By selector) {
+		String texto = driver.findElement(selector).getText();
+		return texto;
+	}
 
 	
 }

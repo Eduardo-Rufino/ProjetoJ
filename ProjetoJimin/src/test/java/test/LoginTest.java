@@ -226,6 +226,24 @@ public class LoginTest {
 	}
 	
 	@Test
+	public void deveValidarRemocaoItemCarrinho() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		deveAdicionarProdutoCarrinho();
+		dsl.removeItemCarrinho();
+		dsl.fechaAlertCarrinho();
+		dsl.abreDropdownCarrinho();
+		wait.until(driver -> dsl.retornaString(By.cssSelector("#cart .dropdown-menu.dropdown-menu-end.p-2.show li")));
+		dsl.validaCarrinhoVazio();
+	}
+	
+	@Test
+	public void deveAtualizarQuantidadeCarrinho() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		deveAdicionarProdutoCarrinho();
+		 
+	}
+	
+	@Test
 	public void teste() {
 		dsl.abreDropdownCarrinho();
 	}
