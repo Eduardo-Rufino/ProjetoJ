@@ -138,17 +138,21 @@ public class DSL {
 	
 	// Retorna o icone da moeda selecionada na barra superior da pagina
 	public String retornaMoeda() {
-		String moeda = driver.findElement(By.cssSelector(".dropdown-toggle strong")).getText();
+		String moeda = driver.findElement(By.cssSelector("#form-currency .dropdown-toggle strong")).getText();
 		return moeda;
 	}
 	
 	// Compara dois valores recebidos, para reaproveitar o assertEquals
-	public void comparaValores(String textoEsperado, String textoAtual) {
+	public void comparaStrings(String textoEsperado, String textoAtual) {
 		Assert.assertEquals(textoEsperado, textoAtual);
 	}
 	
 	// confirma se os dois valores recebidos sao diferentes, para reaproveritar o assertNotEquals
-	public void comparaValoresDiferentes(String valor1, String valor2) {
+	public void comparaStringsDiferentes(String valor1, String valor2) {
+	    Assert.assertNotEquals(valor1, valor2);
+	}
+	
+	public void comparaFloat(float valor1, float valor2) {
 	    Assert.assertNotEquals(valor1, valor2);
 	}
 	
@@ -422,6 +426,7 @@ public class DSL {
 		WebElement botao = driver.findElement(By.cssSelector("#output-cart .input-group .btn.btn-primary"));
 		botao.click();
 	}
+
 	
 	
 	/*

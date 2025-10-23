@@ -50,12 +50,12 @@ public class LoginTest {
 		
 		dsl.clicaDropdown("Login");
 		//dsl.clicaLink("Login");
-		dsl.comparaValores("Account Login", driver.getTitle());
+		dsl.comparaStrings("Account Login", driver.getTitle());
 		dsl.logaSistema("input-email", "input-password","Login");
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		wait.until(ExpectedConditions.titleContains("My Account"));
 		dsl.voltaPaginaInicial();
-		dsl.comparaValores("img-fluid", dsl.encontraCarrossel().getAttribute("Class")); 
+		dsl.comparaStrings("img-fluid", dsl.encontraCarrossel().getAttribute("Class")); 
 	}
 	
 	// retorna para a pagina inicial
@@ -75,7 +75,7 @@ public class LoginTest {
 		});
 		String segundaImagem= dsl.retornaImagemCarrossel("carousel-banner-0");
 		
-		dsl.comparaValoresDiferentes(primeiraImagem, segundaImagem);
+		dsl.comparaStringsDiferentes(primeiraImagem, segundaImagem);
 		
 		//Assert.assertEquals("carousel slide", dsl.encontraCarrossel().getAttribute("class")); 
 	}
@@ -83,7 +83,7 @@ public class LoginTest {
 	// Verifica se o titulo da pagina é o esperado.
 	@Test
 	public void deveValidarTitulo() {
-		dsl.comparaValores("Your Store", dsl.retornaTitulo());
+		dsl.comparaStrings("Your Store", dsl.retornaTitulo());
 	}
 	
 	//Verifica se todos os menus da barra superior estao funcionando. Clica em cada um deles e verifica se o titulo é o esperado ao trocar de pagina
@@ -93,32 +93,32 @@ public class LoginTest {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 		wait.until(ExpectedConditions.titleIs("Your Store"));
 		dsl.clicaTelefone();
-		dsl.comparaValores("Contact Us", dsl.retornaTitulo());
+		dsl.comparaStrings("Contact Us", dsl.retornaTitulo());
 		dsl.clicaWishList();
-		dsl.comparaValores("My Wishlist", dsl.retornaTitulo());
+		dsl.comparaStrings("My Wishlist", dsl.retornaTitulo());
 		dsl.clicaCarrinho();
-		dsl.comparaValores("Shopping Cart", dsl.retornaTitulo());
+		dsl.comparaStrings("Shopping Cart", dsl.retornaTitulo());
 		dsl.clicaMoeda();
 		dsl.trocaMoeda("Dolar");
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(
 				By.cssSelector("div.dropdown a strong"), "$"
 			 )
 		);
-		dsl.comparaValores("$", dsl.retornaMoeda());
+		dsl.comparaStrings("$", dsl.retornaMoeda());
 		dsl.clicaMoeda();
 		dsl.trocaMoeda("Libra");
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(
 					 By.cssSelector("div.dropdown a strong"), "£"
 			 )
 		);
-		dsl.comparaValores("£", dsl.retornaMoeda());
+		dsl.comparaStrings("£", dsl.retornaMoeda());
 		dsl.clicaMoeda();
 		dsl.trocaMoeda("Euro");
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(
 					 By.cssSelector("div.dropdown a strong"), "€"
 			 )
 		);
-		dsl.comparaValores("€", dsl.retornaMoeda());
+		dsl.comparaStrings("€", dsl.retornaMoeda());
 	}
 	
 	// Verifica cada uma das categorias principais da pagina e quais subcategorias tem produtos cadastrados
@@ -147,7 +147,7 @@ public class LoginTest {
 	    String segundaImagem = dsl.retornaImagemCarrossel("carousel-banner-0");
 
 	    // Valida que são diferentes
-	    dsl.comparaValoresDiferentes(primeiraImagem, segundaImagem);
+	    dsl.comparaStringsDiferentes(primeiraImagem, segundaImagem);
 	}
 	
 	// Envia um nome de produto e verifica se esse produto se encontra cadastrado no site
@@ -160,7 +160,7 @@ public class LoginTest {
 		wait.until(ExpectedConditions.titleContains("Search"));
 		String produto = driver.findElement(By.cssSelector(".content .description a")).getText();
 		
-		dsl.comparaValores("iMac", produto);		
+		dsl.comparaStrings("iMac", produto);		
 	}
 	
 	// Envia um nome de produto e verifica se esse produto nao se encontra cadastrado no site
@@ -173,7 +173,7 @@ public class LoginTest {
 		wait.until(ExpectedConditions.titleContains("Search"));
 		String texto = driver.findElement(By.cssSelector("#product-search p")).getText();
 		
-		dsl.comparaValores("Nao existe nenhum produto com esse nome.", texto);
+		dsl.comparaStrings("Nao existe nenhum produto com esse nome.", texto);
 	}
 	
 	// Valida se as informacoes principais do produto estao preenchidas, como marca, disponibilidade e nome.
@@ -239,11 +239,20 @@ public class LoginTest {
 	@Test
 	public void deveAtualizarQuantidadeCarrinho() {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		String quantidadeDesejada = "2";
 		deveAdicionarProdutoCarrinho();
 		dsl.entraCarrinho();
-		dsl.alteraQuantidadeProdutosCarrinho("2");
+		//dsl.retornaMoeda();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='output-cart']//table//td[4]")));
+		float precoUnitario = Float.parseFloat(driver.findElement(By.xpath("//div[@id='output-cart']//table//td[4]")).getText().replaceAll("[^\\d.]", ""));
+		dsl.alteraQuantidadeProdutosCarrinho(quantidadeDesejada);
 		dsl.atualizaQuantidadeCarrinho();
 		dsl.fechaAlertCarrinho();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='output-cart']//table//td[5]")));
+		float precoTotal = Float.parseFloat(driver.findElement(By.xpath("//div[@id='output-cart']//table//td[5]")).getText().replaceAll("[^\\d.]", ""));
+		System.out.println(precoUnitario);
+		System.out.println(precoTotal);
+		dsl.comparaFloat(precoUnitario*Float.parseFloat(quantidadeDesejada), precoTotal);
 	}
 	
 	@Test
