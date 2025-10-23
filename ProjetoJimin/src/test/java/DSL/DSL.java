@@ -404,6 +404,32 @@ public class DSL {
 		String texto = driver.findElement(selector).getText();
 		return texto;
 	}
+	
+	public void entraCarrinho() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#cart .dropdown-menu.show a[href*='route=checkout/cart']")));
+		WebElement carrinho = driver.findElement(By.cssSelector("#cart .dropdown-menu.show a[href*='route=checkout/cart']"));
+		carrinho.click();
+	}
+	
+	public void alteraQuantidadeProdutosCarrinho(String quantidade) {
+		WebElement input = driver.findElement(By.cssSelector("#output-cart .input-group .form-control"));
+		input.clear();
+		input.sendKeys(quantidade);
+	}
+	
+	public void atualizaQuantidadeCarrinho() {
+		WebElement botao = driver.findElement(By.cssSelector("#output-cart .input-group .btn.btn-primary"));
+		botao.click();
+	}
+	
+	
+	/*
+	public float retornaValorCarrinho() {
+		String texto = driver.findElement(By.cssSelector("#cart .dropdown-menu.dropdown-menu-end.p-2.show .table.table-striped.mb-2")).getText();
+		
+	}
+	*/
 
 	
 }

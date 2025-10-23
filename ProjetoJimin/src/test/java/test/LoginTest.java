@@ -240,12 +240,17 @@ public class LoginTest {
 	public void deveAtualizarQuantidadeCarrinho() {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		deveAdicionarProdutoCarrinho();
-		 
+		dsl.entraCarrinho();
+		dsl.alteraQuantidadeProdutosCarrinho("2");
+		dsl.atualizaQuantidadeCarrinho();
+		dsl.fechaAlertCarrinho();
 	}
 	
 	@Test
 	public void teste() {
-		dsl.abreDropdownCarrinho();
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		deveAdicionarProdutoCarrinho();
+		
 	}
 	
 	
