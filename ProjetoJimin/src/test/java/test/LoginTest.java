@@ -256,8 +256,21 @@ public class LoginTest {
 	}
 	
 	@Test
+	public void deveValidarCompraComCarrinhoVazio() {
+		dsl.expandeDropDown("Shopping Cart");
+		dsl.clicaBotaoGenericoCssSelector("#checkout-cart .btn.btn-primary");
+		dsl.validaSeEstaPaginaInicial();
+	}
+	
+	@Test
+	public void deveValidarSubTotalETotal() {
+		
+	}
+	
+	@Test
 	public void teste() {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		
 		deveAdicionarProdutoCarrinho();
 		
 	}

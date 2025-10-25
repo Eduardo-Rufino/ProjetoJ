@@ -426,6 +426,19 @@ public class DSL {
 		WebElement botao = driver.findElement(By.cssSelector("#output-cart .input-group .btn.btn-primary"));
 		botao.click();
 	}
+	
+	public void clicaBotaoGenericoCssSelector(String caminhoBotao) {
+		WebElement botao = driver.findElement(By.cssSelector(caminhoBotao));
+		botao.click();
+	}
+	
+	public void validaSeEstaPaginaInicial() {
+		comparaStrings("Your Store", driver.getTitle());
+	}
+	
+	public float retornaValorComBaseColunaAnterior() {
+		return 0;
+	}
 
 	
 	
