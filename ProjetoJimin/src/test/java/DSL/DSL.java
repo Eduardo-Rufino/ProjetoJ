@@ -152,8 +152,11 @@ public class DSL {
 	    Assert.assertNotEquals(valor1, valor2);
 	}
 	
-	public void comparaFloat(float valor1, float valor2) {
+	public void comparaFloatDiferentes(float valor1, float valor2) {
 	    Assert.assertNotEquals(valor1, valor2);
+	}
+	public void comparaFloat(float valor1, float valor2) {
+	    Assert.assertEquals(valor2, valor1, 0.01f);
 	}
 	
 	/*public void clicaCategoria(String classeDropdown) {
@@ -436,8 +439,18 @@ public class DSL {
 		comparaStrings("Your Store", driver.getTitle());
 	}
 	
-	public float retornaValorComBaseColunaAnterior() {
-		return 0;
+	public float retornaValorComBaseColunaAnterior(String linha) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//tfoot//tr[td/strong[normalize-space()='" + linha + "']]/td[last()]")));
+		String texto = driver.findElement(By.xpath("//tfoot//tr[td/strong[normalize-space()='" + linha + "']]/td[last()]")).getText();
+		texto = texto.replaceAll("[^\\d.-]", "");
+		System.out.println(linha + ": " + texto);
+		return Float.parseFloat(texto);
+	}
+	
+	public float retornaValorTotalComBaseSubTotal(float subTotal, float ecoTax, float vat) {
+		float total = subTotal + ecoTax + vat;
+		return total;
 	}
 
 	

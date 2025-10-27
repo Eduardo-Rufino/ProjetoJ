@@ -264,7 +264,15 @@ public class LoginTest {
 	
 	@Test
 	public void deveValidarSubTotalETotal() {
-		
+		deveAdicionarProdutoCarrinho();
+		dsl.entraCarrinho();
+		float subTotal = dsl.retornaValorComBaseColunaAnterior("Sub-Total");
+		float ecoTax = dsl.retornaValorComBaseColunaAnterior("Eco Tax (-2.00)");
+		float vat = dsl.retornaValorComBaseColunaAnterior("VAT (20%)");
+		float totalEsperado = dsl.retornaValorComBaseColunaAnterior("Total");
+		float total = dsl.retornaValorTotalComBaseSubTotal(subTotal, ecoTax, vat);
+		System.out.println("Total esperado: " + totalEsperado + " Total apresentado: " + total);
+		dsl.comparaFloat(totalEsperado, total);
 	}
 	
 	@Test
