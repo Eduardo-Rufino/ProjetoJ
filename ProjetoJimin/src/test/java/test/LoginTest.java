@@ -276,6 +276,21 @@ public class LoginTest {
 	}
 	
 	@Test
+	public void deveValidarVisualizaçãoCarrinho() {
+		dsl.entraCarrinho();
+		String titulo = dsl.retornaTitulo();
+		dsl.comparaStrings(titulo, "Shopping Cart");
+	}
+	
+	@Test
+	public void deveFinalizarCompraComUsuarioLogado() {
+		deveEntrarNoLogin();
+		dsl.adicionaProdutoCarrinho("iMac");
+		dsl.entraCarrinho();
+		dsl.clicaBotaoGenericoCssSelector("#shopping-cart .btn.btn-primary a[href*='route=checkout/checkout']");
+	}
+	
+	@Test
 	public void teste() {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		

@@ -414,8 +414,8 @@ public class DSL {
 	
 	public void entraCarrinho() {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#cart .dropdown-menu.show a[href*='route=checkout/cart']")));
-		WebElement carrinho = driver.findElement(By.cssSelector("#cart .dropdown-menu.show a[href*='route=checkout/cart']"));
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#top .list-inline-item a[href*='route=checkout/cart']")));
+		WebElement carrinho = driver.findElement(By.cssSelector("#top .list-inline-item a[href*='route=checkout/cart']"));
 		carrinho.click();
 	}
 	
@@ -431,6 +431,8 @@ public class DSL {
 	}
 	
 	public void clicaBotaoGenericoCssSelector(String caminhoBotao) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(caminhoBotao)));
 		WebElement botao = driver.findElement(By.cssSelector(caminhoBotao));
 		botao.click();
 	}
@@ -452,6 +454,8 @@ public class DSL {
 		float total = subTotal + ecoTax + vat;
 		return total;
 	}
+	
+	
 
 	
 	
