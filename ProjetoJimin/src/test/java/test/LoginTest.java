@@ -287,7 +287,13 @@ public class LoginTest {
 		deveEntrarNoLogin();
 		dsl.adicionaProdutoCarrinho("iMac");
 		dsl.entraCarrinho();
-		dsl.clicaBotaoGenericoCssSelector("#shopping-cart .btn.btn-primary a[href*='route=checkout/checkout']");
+		dsl.clicaBotaoGenericoCssSelector("#shopping-cart .btn.btn-primary[href*='route=checkout/checkout']");
+		dsl.preencheInputGenerico("input-shipping-firstname", "Eduardo");
+		dsl.preencheInputGenerico("input-shipping-lastname", "Rufino");
+		dsl.preencheInputGenerico("input-shipping-address-1", "Rua 123");
+		dsl.preencheInputGenerico("input-shipping-city", "Cidade 123");
+		dsl.preencheInputGenerico("input-shipping-postcode", "12345678");
+		dsl.expandeDropDownPorLabel("Teste");
 	}
 	
 	@Test

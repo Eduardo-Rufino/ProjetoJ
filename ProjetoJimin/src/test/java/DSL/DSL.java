@@ -34,6 +34,13 @@ public class DSL {
 	    botao.click();
 	}
 	
+	public void expandeDropDownPorLabel(String Label) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(Label)));
+		WebElement dropDown = driver.findElement(By.cssSelector(Label));
+		dropDown.click();
+	}
+	
 	public void clicaDropdown(String textoItem) {
 	    // 1️⃣ Clicar no botão que abre o dropdown (pode ser span, div, etc.)
 	    //WebElement botao = driver.findElement(By.xpath("//*[text()='" + textoBotao + "']"));
@@ -432,7 +439,7 @@ public class DSL {
 	
 	public void clicaBotaoGenericoCssSelector(String caminhoBotao) {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(caminhoBotao)));
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(caminhoBotao)));
 		WebElement botao = driver.findElement(By.cssSelector(caminhoBotao));
 		botao.click();
 	}
@@ -455,6 +462,12 @@ public class DSL {
 		return total;
 	}
 	
+	public void preencheInputGenerico(String id, String textoDesejado) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.id(id)));
+		WebElement input = driver.findElement(By.id(id));
+		input.sendKeys(textoDesejado);
+	}
 	
 
 	
