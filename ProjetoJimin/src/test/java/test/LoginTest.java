@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -282,19 +283,46 @@ public class LoginTest {
 		dsl.comparaStrings(titulo, "Shopping Cart");
 	}
 	
+	/*
 	@Test
-	public void deveFinalizarCompraComUsuarioLogado() {
-		deveEntrarNoLogin();
-		dsl.adicionaProdutoCarrinho("iMac");
-		dsl.entraCarrinho();
-		dsl.clicaBotaoGenericoCssSelector("#shopping-cart .btn.btn-primary[href*='route=checkout/checkout']");
+	public void deveCadastrarNovoEndereco() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		dsl.preencheInputGenerico("input-shipping-firstname", "Eduardo");
 		dsl.preencheInputGenerico("input-shipping-lastname", "Rufino");
 		dsl.preencheInputGenerico("input-shipping-address-1", "Rua 123");
 		dsl.preencheInputGenerico("input-shipping-city", "Cidade 123");
 		dsl.preencheInputGenerico("input-shipping-postcode", "12345678");
-		dsl.expandeDropDownPorLabel("Teste");
+		dsl.selecionaDropDownPorId("input-shipping-country", "Brazil");
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("input-shipping-zone")));
+		dsl.selecionaDropDownPorId("input-shipping-zone", "São Paulo");
+		dsl.clicaBotaoGenericoCssSelector("#button-shipping-address");
 	}
+	*/
+	
+	//arrumar erro de nao selecionar o radio de pagamento as vezes.
+	@Test
+	public void deveFinalizarCompraComUsuarioLogado() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		deveEntrarNoLogin();
+		dsl.adicionaProdutoCarrinho("iMac");
+		dsl.entraCarrinho();
+		dsl.clicaBotaoGenericoCssSelector("#shopping-cart .btn.btn-primary[href*='route=checkout/checkout']");
+		dsl.selecionaDropDownPorId("input-shipping-address", 1);
+		dsl.clicaBotaoGenericoCssSelector("#button-shipping-methods");
+		dsl.clicaBotaoGenericoCssSelector("#input-shipping-method-flat-flat");	
+		wait.until(ExpectedConditions.elementToBeSelected(By.id("input-shipping-method-flat-flat")));
+		dsl.clicaBotaoGenericoCssSelector("#button-shipping-method");
+		dsl.clicaBotaoGenericoCssSelector("#button-payment-methods");
+		dsl.clicaBotaoGenericoCssSelector("#input-payment-method-cod-cod");
+		wait.until(ExpectedConditions.elementToBeSelected(By.id("input-payment-method-cod-cod")));
+		dsl.clicaBotaoGenericoCssSelector("#button-payment-method");
+		By botaoSelector = By.cssSelector("#checkout-payment .text-end .btn.btn-primary");
+		dsl.scrollParaElemento(botaoSelector);
+		dsl.clicaBotaoGenericoCssSelector("#checkout-payment .text-end .btn.btn-primary");
+		
+	}
+	
+	
 	
 	@Test
 	public void teste() {
