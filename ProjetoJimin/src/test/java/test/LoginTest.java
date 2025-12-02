@@ -302,25 +302,38 @@ public class LoginTest {
 	//arrumar erro de nao selecionar o radio de pagamento as vezes.
 	@Test
 	public void deveFinalizarCompraComUsuarioLogado() {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-		deveEntrarNoLogin();
-		dsl.adicionaProdutoCarrinho("iMac");
-		dsl.entraCarrinho();
-		dsl.clicaBotaoGenericoCssSelector("#shopping-cart .btn.btn-primary[href*='route=checkout/checkout']");
-		dsl.selecionaDropDownPorId("input-shipping-address", 1);
-		dsl.clicaBotaoGenericoCssSelector("#button-shipping-methods");
-		dsl.clicaBotaoGenericoCssSelector("#input-shipping-method-flat-flat");	
-		wait.until(ExpectedConditions.elementToBeSelected(By.id("input-shipping-method-flat-flat")));
-		dsl.clicaBotaoGenericoCssSelector("#button-shipping-method");
-		dsl.clicaBotaoGenericoCssSelector("#button-payment-methods");
-		dsl.clicaBotaoGenericoCssSelector("#input-payment-method-cod-cod");
-		wait.until(ExpectedConditions.elementToBeSelected(By.id("input-payment-method-cod-cod")));
-		dsl.clicaBotaoGenericoCssSelector("#button-payment-method");
-		By botaoSelector = By.cssSelector("#checkout-payment .text-end .btn.btn-primary");
-		dsl.scrollParaElemento(botaoSelector);
-		dsl.clicaBotaoGenericoCssSelector("#checkout-payment .text-end .btn.btn-primary");
-		
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	    deveAdicionarProdutoCarrinho();
+	    dsl.entraCarrinho();
+	    
+	    dsl.clicaBotaoGenericoCssSelector("#shopping-cart .btn.btn-primary[href*='route=checkout/checkout']");
+	    
+	    // Seleciona endereço de entrega existente
+	    dsl.clicaBotaoGenericoCssSelector("#input-shipping-existing");
+	    dsl.selecionaDropDownPorId("input-shipping-address", 1);
+	    
+	    // Seleciona método de entrega
+	    dsl.clicaBotaoGenericoCssSelector("#button-shipping-methods");
+	    dsl.clicaBotaoGenericoCssSelector("#input-shipping-method-flat-flat");    
+	    dsl.clicaBotaoGenericoCssSelector("#button-shipping-method");
+	    
+	    // Espera até que qualquer alerta de sucesso desapareça antes de prosseguir
+	    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
+	    
+	    // Seleciona método de pagamento
+	    dsl.clicaBotaoGenericoCssSelector("#button-payment-methods");
+	    dsl.clicaBotaoGenericoCssSelector("#input-payment-method-cod-cod");
+	    dsl.clicaBotaoGenericoCssSelector("#button-payment-method");
+	    
+	    // Espera até que qualquer alerta de sucesso desapareça antes de prosseguir
+	    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
+	    
+	    // Clica no botão de finalizar pedido
+	    By botaoSelector = By.cssSelector("#checkout-payment .text-end .btn.btn-primary");
+	    dsl.scrollParaElemento(botaoSelector);
+	    dsl.clicaBotaoGenericoCssSelector("#checkout-payment .text-end .btn.btn-primary");
 	}
+
 	
 	
 	
