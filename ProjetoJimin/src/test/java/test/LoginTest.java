@@ -316,6 +316,8 @@ public class LoginTest {
 	    dsl.clicaBotaoGenericoCssSelector("#button-shipping-methods");
 	    dsl.clicaBotaoGenericoCssSelector("#input-shipping-method-flat-flat");    
 	    dsl.clicaBotaoGenericoCssSelector("#button-shipping-method");
+	    dsl.fechaAlertGenerico("#alert .alert.alert-success.alert-dismissible .btn-close");
+	    dsl.fechaAlertGenerico("#alert .alert.alert-success.alert-dismissible .btn-close");
 	    
 	    // Espera até que qualquer alerta de sucesso desapareça antes de prosseguir
 	    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
@@ -324,6 +326,7 @@ public class LoginTest {
 	    dsl.clicaBotaoGenericoCssSelector("#button-payment-methods");
 	    dsl.clicaBotaoGenericoCssSelector("#input-payment-method-cod-cod");
 	    dsl.clicaBotaoGenericoCssSelector("#button-payment-method");
+	    dsl.fechaAlertGenerico("#alert .alert.alert-success.alert-dismissible .btn-close");
 	    
 	    // Espera até que qualquer alerta de sucesso desapareça antes de prosseguir
 	    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
@@ -333,6 +336,22 @@ public class LoginTest {
 	    dsl.scrollParaElemento(botaoSelector);
 	    dsl.clicaBotaoGenericoCssSelector("#checkout-payment .text-end .btn.btn-primary");
 	}
+	
+	/*
+	@Test
+	public void deveVerificarErroDadoObrigatorio() {
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	    
+	    deveEntrarNoLogin();
+	    dsl.expandeDropDown("My Account");
+	    dsl.clicaBotaoGenericoCssSelector("#top .dropdown-menu.dropdown-menu-right.show a[href*='route=account']");
+	    dsl.clicaBotaoGenericoCssSelector("#content .list-unstyled a[href*='route=account/edit']");
+	    dsl.limpaInputGenerico("#input-fisrtname");
+	    dsl.limpaInputGenerico("#input-lastname");
+	    dsl.limpaInputGenerico("#input-email");
+	    dsl.clicaBotaoGenericoCssSelector("");
+	}
+	*/
 
 	
 	

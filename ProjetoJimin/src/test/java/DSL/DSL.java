@@ -351,6 +351,13 @@ public class DSL {
             addToCartButton.click();
     }
 	
+	public void fechaAlertGenerico(String caminho) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement alert = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(caminho)));
+		wait.until(ExpectedConditions.elementToBeClickable(alert));
+		alert.click();
+	}
+	
 	//Fecha alert de confirmação de produto adicionado ao carrinho
 	public void fechaAlertCarrinho() {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -483,6 +490,11 @@ public class DSL {
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 	    WebElement elemento = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 	    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", elemento);
+	}
+	
+	public void limpaInputGenerico(String Caminho) {
+		WebElement input = driver.findElement(By.id(Caminho));
+		input.clear();
 	}
 	
 
