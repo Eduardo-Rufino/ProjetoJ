@@ -337,7 +337,7 @@ public class LoginTest {
 	    dsl.clicaBotaoGenericoCssSelector("#checkout-payment .text-end .btn.btn-primary");
 	}
 	
-	/*
+	
 	@Test
 	public void deveVerificarErroDadoObrigatorio() {
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -346,12 +346,15 @@ public class LoginTest {
 	    dsl.expandeDropDown("My Account");
 	    dsl.clicaBotaoGenericoCssSelector("#top .dropdown-menu.dropdown-menu-right.show a[href*='route=account']");
 	    dsl.clicaBotaoGenericoCssSelector("#content .list-unstyled a[href*='route=account/edit']");
-	    dsl.limpaInputGenerico("#input-fisrtname");
-	    dsl.limpaInputGenerico("#input-lastname");
-	    dsl.limpaInputGenerico("#input-email");
-	    dsl.clicaBotaoGenericoCssSelector("");
+	    dsl.limpaInputGenerico("input-firstname");
+	    dsl.limpaInputGenerico("input-lastname");
+	    dsl.limpaInputGenerico("input-email");
+	    dsl.clicaBotaoGenericoCssSelector("#form-customer .btn.btn-primary");
+	    dsl.validaCampoObrigatorioGenerico("error-firstname", "First Name must be between 1 and 32 characters!");
+	    dsl.validaCampoObrigatorioGenerico("error-lastname", "Last Name must be between 1 and 32 characters!");
+	    dsl.validaCampoObrigatorioGenerico("error-email", "E-Mail Address does not appear to be valid!");
 	}
-	*/
+	
 
 	
 	

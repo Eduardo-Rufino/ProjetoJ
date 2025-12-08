@@ -497,6 +497,14 @@ public class DSL {
 		input.clear();
 	}
 	
+	public void validaCampoObrigatorioGenerico(String idCampo, String mensagemEsperada) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		
+		WebElement erro = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(idCampo)));
+		
+		comparaStrings(mensagemEsperada , erro.getText());
+	}
+	
 
 	
 	
