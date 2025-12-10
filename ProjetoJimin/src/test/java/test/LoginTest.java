@@ -394,6 +394,11 @@ public class LoginTest {
 	    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
 	}
 	
+	@Test
+	public void deveCriarContaNova() {
+		
+	}
+	
 
 	
 	
