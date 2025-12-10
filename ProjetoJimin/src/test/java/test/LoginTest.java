@@ -311,12 +311,14 @@ public class LoginTest {
 	    // Seleciona endereço de entrega existente
 	    dsl.clicaBotaoGenericoCssSelector("#input-shipping-existing");
 	    dsl.selecionaDropDownPorId("input-shipping-address", 1);
+	    dsl.fechaAlertGenerico("#alert .alert.alert-success.alert-dismissible .btn-close");
+	    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
 	    
 	    // Seleciona método de entrega
 	    dsl.clicaBotaoGenericoCssSelector("#button-shipping-methods");
 	    dsl.clicaBotaoGenericoCssSelector("#input-shipping-method-flat-flat");    
 	    dsl.clicaBotaoGenericoCssSelector("#button-shipping-method");
-	    dsl.fechaAlertGenerico("#alert .alert.alert-success.alert-dismissible .btn-close");
+	    
 	    dsl.fechaAlertGenerico("#alert .alert.alert-success.alert-dismissible .btn-close");
 	    
 	    // Espera até que qualquer alerta de sucesso desapareça antes de prosseguir
@@ -353,6 +355,43 @@ public class LoginTest {
 	    dsl.validaCampoObrigatorioGenerico("error-firstname", "First Name must be between 1 and 32 characters!");
 	    dsl.validaCampoObrigatorioGenerico("error-lastname", "Last Name must be between 1 and 32 characters!");
 	    dsl.validaCampoObrigatorioGenerico("error-email", "E-Mail Address does not appear to be valid!");
+	}
+	
+	@Test
+	public void deveValidarPagamentoEEnvio() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	    deveAdicionarProdutoCarrinho();
+	    dsl.entraCarrinho();
+	    
+	    dsl.clicaBotaoGenericoCssSelector("#shopping-cart .btn.btn-primary[href*='route=checkout/checkout']");
+	    
+	    // Seleciona endereço de entrega existente
+	    dsl.clicaBotaoGenericoCssSelector("#input-shipping-existing");
+	    dsl.selecionaDropDownPorId("input-shipping-address", 1);
+	    dsl.fechaAlertGenerico("#alert .alert.alert-success.alert-dismissible .btn-close");
+	    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
+	    
+	    // Seleciona método de entrega
+	    dsl.clicaBotaoGenericoCssSelector("#button-shipping-methods");
+	    dsl.clicaBotaoGenericoCssSelector("#input-shipping-method-flat-flat");    
+	    dsl.clicaBotaoGenericoCssSelector("#button-shipping-method");
+	    
+	    //wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("alert")));
+	    dsl.validaAlert("Success: You have changed shipping method!", "alert");
+	    
+	    //dsl.comparaStrings("Success: You have changed shipping method! ", url);
+	    
+	    // Espera até que qualquer alerta de sucesso desapareça antes de prosseguir
+	    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
+	    
+	    // Seleciona método de pagamento
+	    dsl.clicaBotaoGenericoCssSelector("#button-payment-methods");
+	    dsl.clicaBotaoGenericoCssSelector("#input-payment-method-cod-cod");
+	    dsl.clicaBotaoGenericoCssSelector("#button-payment-method");
+	    dsl.fechaAlertGenerico("#alert .alert.alert-success.alert-dismissible .btn-close");
+	    
+	    // Espera até que qualquer alerta de sucesso desapareça antes de prosseguir
+	    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
 	}
 	
 
