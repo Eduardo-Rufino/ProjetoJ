@@ -514,6 +514,11 @@ public class DSL {
 		comparaStrings(mensagemEsperada , alert.getText());
 	}
 	
+	public boolean estaLogado() {
+		expandeDropDown("My Account");
+		List<WebElement> logout = driver.findElements(By.cssSelector("a[href*='route=account/logout']"));
+	    return !logout.isEmpty();
+	}
 
 	
 	

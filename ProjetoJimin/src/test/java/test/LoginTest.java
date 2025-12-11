@@ -1,6 +1,7 @@
 package test;
 
 import java.time.Duration;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -396,7 +397,12 @@ public class LoginTest {
 	
 	@Test
 	public void deveCriarContaNova() {
-		
+		if(dsl.estaLogado() == true) {
+			dsl.clicaBotaoGenericoCssSelector("#top a.dropdown-item[href*='route=account/logout']");
+		}
+		else {
+			dsl.clicaBotaoGenericoCssSelector("#top a.dropdown-item[href*='route=account/login']");
+		}
 	}
 	
 
