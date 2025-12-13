@@ -22,7 +22,7 @@ public class DSL {
 	public DSL(WebDriver driver) {
 		this.driver = driver;
 	}
-
+	
 	// Recebe uma string com o link e clica nele
 	public void clicaLink(String link) {
 		driver.findElement(By.linkText(link)).click();

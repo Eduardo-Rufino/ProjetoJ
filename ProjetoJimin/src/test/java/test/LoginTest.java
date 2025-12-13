@@ -22,6 +22,10 @@ import pages.LoginPage;
 public class LoginTest {
 	
 	String url = "http://localhost/opencart/";
+	String primeiroNome = "Teste";
+	String sobreNome = "Teste";
+	String novoEmail = "modelo4@modelo.com";
+	String novaSenha = "modelo";
 	
 	private WebDriver driver;
 	
@@ -343,8 +347,6 @@ public class LoginTest {
 	
 	@Test
 	public void deveVerificarErroDadoObrigatorio() {
-	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-	    
 	    deveEntrarNoLogin();
 	    dsl.expandeDropDown("My Account");
 	    dsl.clicaBotaoGenericoCssSelector("#top .dropdown-menu.dropdown-menu-right.show a[href*='route=account']");
@@ -397,12 +399,36 @@ public class LoginTest {
 	
 	@Test
 	public void deveCriarContaNova() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		if(dsl.estaLogado() == true) {
 			dsl.clicaBotaoGenericoCssSelector("#top a.dropdown-item[href*='route=account/logout']");
 		}
-		else {
-			dsl.clicaBotaoGenericoCssSelector("#top a.dropdown-item[href*='route=account/login']");
-		}
+		dsl.clicaBotaoGenericoCssSelector("#top a.dropdown-item[href*='route=account/register']");
+		dsl.preencheInputGenerico("input-firstname", primeiroNome);
+		dsl.preencheInputGenerico("input-lastname", sobreNome);
+		dsl.preencheInputGenerico("input-email", novoEmail);
+		dsl.preencheInputGenerico("input-password", novaSenha);
+		dsl.clicaBotaoGenericoCssSelector("#form-register .text-end .form-check-input");
+		wait.until(driver -> {
+			WebElement campo = driver.findElement(By.id("input-firstname"));
+			return !campo.getAttribute("value").isEmpty();
+		});
+		wait.until(driver -> {
+			WebElement campo = driver.findElement(By.id("input-lastname"));
+			return !campo.getAttribute("value").isEmpty();
+		});
+		wait.until(driver -> {
+			WebElement campo = driver.findElement(By.id("input-email"));
+			return !campo.getAttribute("value").isEmpty();
+		});
+		wait.until(driver -> {
+			WebElement campo = driver.findElement(By.id("input-password"));
+			return !campo.getAttribute("value").isEmpty();
+		});
+		wait.until(ExpectedConditions.elementToBeSelected(By.cssSelector("#form-register .text-end .form-check-input")));
+		dsl.clicaBotaoGenericoCssSelector("#form-register .btn.btn-primary");
+		wait.until(ExpectedConditions.titleIs("Your Account Has Been Created!"));
+		dsl.comparaStrings("Your Account Has Been Created!", driver.getTitle());
 	}
 	
 
