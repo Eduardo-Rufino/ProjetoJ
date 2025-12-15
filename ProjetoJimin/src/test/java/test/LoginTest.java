@@ -57,7 +57,7 @@ public class LoginTest {
 		dsl.clicaDropdown("Login");
 		//dsl.clicaLink("Login");
 		dsl.comparaStrings("Account Login", driver.getTitle());
-		dsl.logaSistema("input-email", "input-password","Login");
+		dsl.logaSistema("teste@teste.com", "teste123","Login");
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		wait.until(ExpectedConditions.titleContains("My Account"));
 		dsl.voltaPaginaInicial();
@@ -429,6 +429,53 @@ public class LoginTest {
 		dsl.clicaBotaoGenericoCssSelector("#form-register .btn.btn-primary");
 		wait.until(ExpectedConditions.titleIs("Your Account Has Been Created!"));
 		dsl.comparaStrings("Your Account Has Been Created!", driver.getTitle());
+	}
+	
+	@Test
+	public void deveValidarEmailExistente() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		if(dsl.estaLogado() == true) {
+			dsl.clicaBotaoGenericoCssSelector("#top a.dropdown-item[href*='route=account/logout']");
+		}
+		dsl.clicaBotaoGenericoCssSelector("#top a.dropdown-item[href*='route=account/register']");
+		dsl.preencheInputGenerico("input-firstname", "teste");
+		dsl.preencheInputGenerico("input-lastname", "teste");
+		dsl.preencheInputGenerico("input-email", "teste@teste.com");
+		dsl.preencheInputGenerico("input-password", "teste123");
+		dsl.clicaBotaoGenericoCssSelector("#form-register .text-end .form-check-input");
+		wait.until(driver -> {
+			WebElement campo = driver.findElement(By.id("input-firstname"));
+			return !campo.getAttribute("value").isEmpty();
+		});
+		wait.until(driver -> {
+			WebElement campo = driver.findElement(By.id("input-lastname"));
+			return !campo.getAttribute("value").isEmpty();
+		});
+		wait.until(driver -> {
+			WebElement campo = driver.findElement(By.id("input-email"));
+			return !campo.getAttribute("value").isEmpty();
+		});
+		wait.until(driver -> {
+			WebElement campo = driver.findElement(By.id("input-password"));
+			return !campo.getAttribute("value").isEmpty();
+		});
+		wait.until(ExpectedConditions.elementToBeSelected(By.cssSelector("#form-register .text-end .form-check-input")));
+		dsl.clicaBotaoGenericoCssSelector("#form-register .btn.btn-primary");
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("alert")));
+		dsl.comparaStrings(driver.findElement(By.cssSelector("#alert .alert.alert-danger.alert-dismissible")).getText(), "Warning: E-Mail Address is already registered!");
+	}
+	
+	@Test
+	public void deveLogarComDadosInvalidos() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		dsl.expandeDropDown("My Account");
+		
+		dsl.clicaDropdown("Login");
+		//dsl.clicaLink("Login");
+		dsl.comparaStrings("Account Login", driver.getTitle());
+		dsl.logaSistema("email_nao_cadastrado@teste.com", "SenhaErrada","Login");
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("alert")));
+		dsl.comparaStrings(driver.findElement(By.cssSelector("#alert .alert.alert-danger.alert-dismissible")).getText(), "Warning: No match for E-Mail Address and/or Password.");
 	}
 	
 

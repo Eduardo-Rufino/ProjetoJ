@@ -67,11 +67,11 @@ public class DSL {
 	}
 	
 	// loga no sistema recebendo uma String para o email, uma para a senha e uma para o botão de logar
-	public void logaSistema(String idemail, String idSenha, String textoBotao) {
-		WebElement email = driver.findElement(By.id(idemail));
-		email.sendKeys("teste@teste.com");
-		WebElement senha = driver.findElement(By.id(idSenha));
-		senha.sendKeys("teste123");
+	public void logaSistema(String emailLogin, String senhaLogin, String textoBotao) {
+		WebElement email = driver.findElement(By.id("input-email"));
+		email.sendKeys(emailLogin);
+		WebElement senha = driver.findElement(By.id("input-password"));
+		senha.sendKeys(senhaLogin);
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		WebElement botao = wait.until(ExpectedConditions.elementToBeClickable(
 		    By.xpath("//form[@id='form-login']//button[text()='Login']"))
