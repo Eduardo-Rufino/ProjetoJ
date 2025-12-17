@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -465,6 +466,7 @@ public class LoginTest {
 		dsl.comparaStrings(driver.findElement(By.cssSelector("#alert .alert.alert-danger.alert-dismissible")).getText(), "Warning: E-Mail Address is already registered!");
 	}
 	
+	/*
 	@Test
 	public void deveLogarComDadosInvalidos() {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -474,6 +476,41 @@ public class LoginTest {
 		//dsl.clicaLink("Login");
 		dsl.comparaStrings("Account Login", driver.getTitle());
 		dsl.logaSistema("email_nao_cadastrado@teste.com", "SenhaErrada","Login");
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("alert")));
+		dsl.comparaStrings(driver.findElement(By.cssSelector("#alert .alert.alert-danger.alert-dismissible")).getText(), "Warning: No match for E-Mail Address and/or Password.");
+	}
+	*/
+	
+	@Test
+	public void deveLogarComDadosInvalidos() {
+
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+	    dsl.expandeDropDown("My Account");
+	    dsl.clicaDropdown("Login");
+
+	    wait.until(ExpectedConditions.titleIs("Account Login"));
+
+	    // Deixa o email vazio e tenta submeter
+	    dsl.logaSistema("teste", "qualquerSenha", "Login");
+
+	    WebElement email = driver.findElement(By.id("input-email"));
+
+	    String mensagemValidacao = (String) ((JavascriptExecutor) driver)
+	            .executeScript("return arguments[0].validationMessage;", email);
+
+	    Assert.assertFalse(mensagemValidacao.isEmpty());
+	}
+	
+	@Test
+	public void deveLogarComSenhaErrada() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		dsl.expandeDropDown("My Account");
+		
+		dsl.clicaDropdown("Login");
+		//dsl.clicaLink("Login");
+		dsl.comparaStrings("Account Login", driver.getTitle());
+		dsl.logaSistema("teste@teste.com", "SenhaErrada","Login");
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("alert")));
 		dsl.comparaStrings(driver.findElement(By.cssSelector("#alert .alert.alert-danger.alert-dismissible")).getText(), "Warning: No match for E-Mail Address and/or Password.");
 	}
