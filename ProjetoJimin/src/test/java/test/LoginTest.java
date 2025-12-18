@@ -496,10 +496,9 @@ public class LoginTest {
 
 	    WebElement email = driver.findElement(By.id("input-email"));
 
-	    String mensagemValidacao = (String) ((JavascriptExecutor) driver)
-	            .executeScript("return arguments[0].validationMessage;", email);
+	    String inputValidacao = dsl.estaComErroInput();
 
-	    Assert.assertFalse(mensagemValidacao.isEmpty());
+	    Assert.assertFalse(inputValidacao.isEmpty());
 	}
 	
 	@Test

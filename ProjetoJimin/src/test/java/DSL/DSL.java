@@ -519,6 +519,15 @@ public class DSL {
 		List<WebElement> logout = driver.findElements(By.cssSelector("a[href*='route=account/logout']"));
 	    return !logout.isEmpty();
 	}
+	
+	public String estaComErroInput() {
+		WebElement input = driver.findElement(By.id("input-email"));
+		
+		String mensagemValidacao = (String) ((JavascriptExecutor) driver)
+	            .executeScript("return arguments[0].validationMessage;", input);
+		
+		return mensagemValidacao;
+	}
 
 	
 	
