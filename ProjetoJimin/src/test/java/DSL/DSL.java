@@ -529,6 +529,12 @@ public class DSL {
 		return mensagemValidacao;
 	}
 
+	public void aguardaLogout() {
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	    wait.until(ExpectedConditions.invisibilityOfElementLocated(
+	        By.cssSelector("#top a[href*='route=account/logout']")
+	    ));
+	}
 	
 	
 	/*

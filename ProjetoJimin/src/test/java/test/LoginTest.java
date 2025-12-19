@@ -55,7 +55,7 @@ public class LoginTest {
 		
 		dsl.expandeDropDown("My Account");
 		
-		dsl.clicaDropdown("Login");
+		dsl.clicaBotaoGenericoCssSelector("#top a.dropdown-item[href*='route=account/login']");
 		//dsl.clicaLink("Login");
 		dsl.comparaStrings("Account Login", driver.getTitle());
 		dsl.logaSistema("teste@teste.com", "teste123","Login");
@@ -514,7 +514,33 @@ public class LoginTest {
 		dsl.comparaStrings(driver.findElement(By.cssSelector("#alert .alert.alert-danger.alert-dismissible")).getText(), "Warning: No match for E-Mail Address and/or Password.");
 	}
 	
-
+	@Test
+	public void deveRecuperarSenha() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		dsl.expandeDropDown("My Account");
+		
+		dsl.clicaDropdown("Login");
+		dsl.clicaBotaoGenericoCssSelector("#form-login a[href*='route=account/forgotten']");
+		dsl.preencheInputGenerico("input-email", "teste@teste.com");
+		dsl.clicaBotaoGenericoCssSelector("#form-forgotten .text-end .btn.btn-primary");
+		wait.until(ExpectedConditions.titleIs("Account Login"));
+		String mensagem = driver.findElement(By.cssSelector("#account-login .alert")).getText();
+		dsl.comparaStrings(mensagem, "text_success");;
+	
+	}
+	
+	@Test
+	public void deveRealizarLogout() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		if(dsl.estaLogado() == false) {	
+			dsl.expandeDropDown("My Account");
+			deveEntrarNoLogin();
+		}		
+		dsl.expandeDropDown("My Account");
+		dsl.clicaBotaoGenericoCssSelector("#top a.dropdown-item[href*='route=account/logout']");
+		dsl.aguardaLogout();
+		dsl.comparaStrings(driver.getTitle(), "Account Logout");
+	}
 	
 	
 	
