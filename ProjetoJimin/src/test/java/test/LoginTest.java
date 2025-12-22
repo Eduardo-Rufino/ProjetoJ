@@ -531,7 +531,6 @@ public class LoginTest {
 	
 	@Test
 	public void deveRealizarLogout() {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		if(dsl.estaLogado() == false) {	
 			dsl.expandeDropDown("My Account");
 			deveEntrarNoLogin();
@@ -542,6 +541,25 @@ public class LoginTest {
 		dsl.comparaStrings(driver.getTitle(), "Account Logout");
 	}
 	
+	@Test
+	public void deveAlterarInformaçõesPessoais() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		deveEntrarNoLogin();
+		dsl.expandeDropDown("My Account");
+		dsl.clicaBotaoGenericoCssSelector("#top .list-inline-item .dropdown-menu.show a.dropdown-item[href*='route=account/account']");
+		dsl.clicaBotaoGenericoCssSelector("#content .list-unstyled a[href*='route=account']");
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("input-firstname")));
+		dsl.limpaInputGenerico("input-firstname");
+		dsl.preencheInputGenerico("input-firstname", "teste1");
+		dsl.limpaInputGenerico("input-lastname");
+		dsl.preencheInputGenerico("input-lastname", "teste2");
+		dsl.limpaInputGenerico("input-email");
+		dsl.preencheInputGenerico("input-email", "teste1@teste.com");
+		dsl.clicaBotaoGenericoCssSelector("#content .btn.btn-primary");
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#alert .alert.alert-success.alert-dismissible")));
+		String alerta = driver.findElement(By.cssSelector("#alert .alert.alert-success.alert-dismissible")).getText();
+		dsl.comparaStrings(alerta, "Success: Your account has been successfully updated.");
+	}
 	
 	
 	@Test
