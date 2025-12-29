@@ -35,6 +35,26 @@ public class DSL {
 	    botao.click();
 	}
 	
+	public void aguardaElementoVisivel(String caminhoElemento) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(caminhoElemento)));
+	}
+	
+	public void aguardaElementoInvisivel(String caminhoElemento) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(caminhoElemento)));
+	}
+	
+	public void aguardaElementoSelecionado(String caminhoElemento) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.elementToBeSelected(By.cssSelector(caminhoElemento)));
+	}
+	
+	public void aguardaTitulo(String titulo) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.titleIs(titulo));
+	}
+	
 	public void expandeDropDownPorId(String Id) {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(Id)));
