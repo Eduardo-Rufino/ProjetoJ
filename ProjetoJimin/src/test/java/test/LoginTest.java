@@ -547,18 +547,33 @@ public class LoginTest {
 		deveEntrarNoLogin();
 		dsl.expandeDropDown("My Account");
 		dsl.clicaBotaoGenericoCssSelector("#top .list-inline-item .dropdown-menu.show a.dropdown-item[href*='route=account/account']");
-		dsl.clicaBotaoGenericoCssSelector("#content .list-unstyled a[href*='route=account']");
+		dsl.clicaBotaoGenericoCssSelector("#content .list-unstyled a[href*='route=account/edit']");
 		wait.until(ExpectedConditions.elementToBeClickable(By.id("input-firstname")));
 		dsl.limpaInputGenerico("input-firstname");
 		dsl.preencheInputGenerico("input-firstname", "teste1");
 		dsl.limpaInputGenerico("input-lastname");
 		dsl.preencheInputGenerico("input-lastname", "teste2");
 		dsl.limpaInputGenerico("input-email");
-		dsl.preencheInputGenerico("input-email", "teste1@teste.com");
+		dsl.preencheInputGenerico("input-email", "teste@teste.com");
 		dsl.clicaBotaoGenericoCssSelector("#content .btn.btn-primary");
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#alert .alert.alert-success.alert-dismissible")));
 		String alerta = driver.findElement(By.cssSelector("#alert .alert.alert-success.alert-dismissible")).getText();
 		dsl.comparaStrings(alerta, "Success: Your account has been successfully updated.");
+	}
+	
+	@Test
+	public void deveAlterarSenha() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		String senha = "teste123";
+		deveEntrarNoLogin();
+		dsl.expandeDropDown("My Account");
+		dsl.clicaBotaoGenericoCssSelector("#top .list-inline-item .dropdown-menu.show a.dropdown-item[href*='route=account/account']");
+		dsl.clicaBotaoGenericoCssSelector("#content .list-unstyled a[href*='route=account/password']");
+		dsl.preencheInputGenerico("input-password", senha);
+		dsl.preencheInputGenerico("input-confirm", senha);
+		dsl.clicaBotaoGenericoCssSelector("#form-password .col.text-end .btn.btn-primary");
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#alert .alert.alert-success.alert-dismissible")));
+		dsl.comparaStrings("Success: Your password has been successfully updated.", driver.findElement(By.cssSelector("#alert .alert")).getText());
 	}
 	
 	
