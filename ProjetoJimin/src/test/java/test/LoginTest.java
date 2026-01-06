@@ -51,16 +51,14 @@ public class LoginTest {
 	// Loga no site com as informacoes que forem passadas
 	@Test
 	public void deveEntrarNoLogin() {
-		//page.clicaLogin();
-		
-		dsl.expandeDropDown("My Account");
-		
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		//page.clicaLogin();		
+		dsl.expandeDropDown("My Account");		
 		dsl.clicaBotaoGenericoCssSelector("#top a.dropdown-item[href*='route=account/login']");
 		//dsl.clicaLink("Login");
 		dsl.comparaStrings("Account Login", driver.getTitle());
-		dsl.logaSistema("teste@teste.com", "teste123","Login");
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-		wait.until(ExpectedConditions.titleContains("My Account"));
+		dsl.logaSistema("teste@teste.com", "teste123","Login");		
+		dsl.aguardaTitulo("My Account");
 		dsl.voltaPaginaInicial();
 		dsl.comparaStrings("img-fluid", dsl.encontraCarrossel().getAttribute("Class")); 
 	}
@@ -98,7 +96,7 @@ public class LoginTest {
 	public void devevalidarMenuSuperior() {
 		deveEntrarNoLogin();
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-		wait.until(ExpectedConditions.titleIs("Your Store"));
+		dsl.aguardaTitulo("Your Store");
 		dsl.clicaTelefone();
 		dsl.comparaStrings("Contact Us", dsl.retornaTitulo());
 		dsl.clicaWishList();
@@ -162,7 +160,7 @@ public class LoginTest {
 	public void devetestarProdutoExistente() {
 		deveEntrarNoLogin();
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-		wait.until(ExpectedConditions.titleIs("Your Store"));
+		dsl.aguardaTitulo("Your Store");
 		dsl.pesquisaProduto("iMac");
 		wait.until(ExpectedConditions.titleContains("Search"));
 		String produto = driver.findElement(By.cssSelector(".content .description a")).getText();
@@ -175,7 +173,7 @@ public class LoginTest {
 	public void devetestarProdutoInexistente() {
 		deveEntrarNoLogin();
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-		wait.until(ExpectedConditions.titleIs("Your Store"));
+		dsl.aguardaTitulo("Your Store");
 		dsl.pesquisaProduto("iMac");
 		wait.until(ExpectedConditions.titleContains("Search"));
 		String texto = driver.findElement(By.cssSelector("#product-search p")).getText();
@@ -318,7 +316,8 @@ public class LoginTest {
 	    dsl.clicaBotaoGenericoCssSelector("#input-shipping-existing");
 	    dsl.selecionaDropDownPorId("input-shipping-address", 1);
 	    dsl.fechaAlertGenerico("#alert .alert.alert-success.alert-dismissible .btn-close");
-	    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
+	    //wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
+	    dsl.aguardaElementoInvisivel(".alert-success.alert-dismissible");
 	    
 	    // Seleciona método de entrega
 	    dsl.clicaBotaoGenericoCssSelector("#button-shipping-methods");
@@ -328,7 +327,8 @@ public class LoginTest {
 	    dsl.fechaAlertGenerico("#alert .alert.alert-success.alert-dismissible .btn-close");
 	    
 	    // Espera até que qualquer alerta de sucesso desapareça antes de prosseguir
-	    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
+	    //wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
+	    dsl.aguardaElementoInvisivel(".alert-success.alert-dismissible");
 	    
 	    // Seleciona método de pagamento
 	    dsl.clicaBotaoGenericoCssSelector("#button-payment-methods");
@@ -337,7 +337,8 @@ public class LoginTest {
 	    dsl.fechaAlertGenerico("#alert .alert.alert-success.alert-dismissible .btn-close");
 	    
 	    // Espera até que qualquer alerta de sucesso desapareça antes de prosseguir
-	    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
+	    //wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
+	    dsl.aguardaElementoInvisivel(".alert-success.alert-dismissible");
 	    
 	    // Clica no botão de finalizar pedido
 	    By botaoSelector = By.cssSelector("#checkout-payment .text-end .btn.btn-primary");
@@ -373,7 +374,8 @@ public class LoginTest {
 	    dsl.clicaBotaoGenericoCssSelector("#input-shipping-existing");
 	    dsl.selecionaDropDownPorId("input-shipping-address", 1);
 	    dsl.fechaAlertGenerico("#alert .alert.alert-success.alert-dismissible .btn-close");
-	    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
+	    //wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
+	    dsl.aguardaElementoInvisivel(".alert-success.alert-dismissible");
 	    
 	    // Seleciona método de entrega
 	    dsl.clicaBotaoGenericoCssSelector("#button-shipping-methods");
@@ -386,7 +388,8 @@ public class LoginTest {
 	    //dsl.comparaStrings("Success: You have changed shipping method! ", url);
 	    
 	    // Espera até que qualquer alerta de sucesso desapareça antes de prosseguir
-	    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
+	    //wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
+	    dsl.aguardaElementoInvisivel(".alert-success.alert-dismissible");
 	    
 	    // Seleciona método de pagamento
 	    dsl.clicaBotaoGenericoCssSelector("#button-payment-methods");
@@ -395,7 +398,8 @@ public class LoginTest {
 	    dsl.fechaAlertGenerico("#alert .alert.alert-success.alert-dismissible .btn-close");
 	    
 	    // Espera até que qualquer alerta de sucesso desapareça antes de prosseguir
-	    wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
+	    //wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".alert-success.alert-dismissible")));
+	    dsl.aguardaElementoInvisivel(".alert-success.alert-dismissible");
 	}
 	
 	@Test
@@ -426,9 +430,11 @@ public class LoginTest {
 			WebElement campo = driver.findElement(By.id("input-password"));
 			return !campo.getAttribute("value").isEmpty();
 		});
-		wait.until(ExpectedConditions.elementToBeSelected(By.cssSelector("#form-register .text-end .form-check-input")));
+		//wait.until(ExpectedConditions.elementToBeSelected(By.cssSelector("#form-register .text-end .form-check-input")));
+		dsl.aguardaElementoSelecionado("#form-register .text-end .form-check-input");
 		dsl.clicaBotaoGenericoCssSelector("#form-register .btn.btn-primary");
-		wait.until(ExpectedConditions.titleIs("Your Account Has Been Created!"));
+		//wait.until(ExpectedConditions.titleIs("Your Account Has Been Created!"));
+		dsl.aguardaTitulo("Your Account Has Been Created!");
 		dsl.comparaStrings("Your Account Has Been Created!", driver.getTitle());
 	}
 	
@@ -460,11 +466,15 @@ public class LoginTest {
 			WebElement campo = driver.findElement(By.id("input-password"));
 			return !campo.getAttribute("value").isEmpty();
 		});
-		wait.until(ExpectedConditions.elementToBeSelected(By.cssSelector("#form-register .text-end .form-check-input")));
+		//wait.until(ExpectedConditions.elementToBeSelected(By.cssSelector("#form-register .text-end .form-check-input")));
+		dsl.aguardaElementoSelecionado("#form-register .text-end .form-check-input");
 		dsl.clicaBotaoGenericoCssSelector("#form-register .btn.btn-primary");
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("alert")));
+		dsl.aguardaElementoVisivel("#alert");
 		dsl.comparaStrings(driver.findElement(By.cssSelector("#alert .alert.alert-danger.alert-dismissible")).getText(), "Warning: E-Mail Address is already registered!");
 	}
+	
+	//------------------------------até aqui os waits foram substituidos--------------------------------
 	
 	/*
 	@Test
