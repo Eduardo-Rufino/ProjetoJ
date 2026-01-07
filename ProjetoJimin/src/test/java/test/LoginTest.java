@@ -174,11 +174,11 @@ public class LoginTest {
 		deveEntrarNoLogin();
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		dsl.aguardaTitulo("Your Store");
-		dsl.pesquisaProduto("iMac");
+		dsl.pesquisaProduto("Produto Invalido");
 		wait.until(ExpectedConditions.titleContains("Search"));
 		String texto = driver.findElement(By.cssSelector("#product-search p")).getText();
 		
-		dsl.comparaStrings("Nao existe nenhum produto com esse nome.", texto);
+		dsl.comparaStrings("There is no product that matches the search criteria.", texto);
 	}
 	
 	// Valida se as informacoes principais do produto estao preenchidas, como marca, disponibilidade e nome.
@@ -253,10 +253,15 @@ public class LoginTest {
 		dsl.alteraQuantidadeProdutosCarrinho(quantidadeDesejada);
 		dsl.atualizaQuantidadeCarrinho();
 		dsl.fechaAlertCarrinho();
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='output-cart']//table//td[5]")));
-		float precoTotal = Float.parseFloat(driver.findElement(By.xpath("//div[@id='output-cart']//table//td[5]")).getText().replaceAll("[^\\d.]", ""));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+			    "//div[@id='output-cart']//tfoot[@id='checkout-total']" +
+			    	    "//tr[td/strong[text()='Total']]//td[2]")));
+		float precoTotal = Float.parseFloat(driver.findElement(By.xpath(
+			    "//div[@id='output-cart']//tfoot[@id='checkout-total']" +
+			    	    "//tr[td/strong[text()='Total']]//td[2]")).getText().replaceAll("[^\\d.]", ""));
 		System.out.println(precoUnitario);
 		System.out.println(precoTotal);
+		System.out.println(Float.parseFloat(quantidadeDesejada));
 		dsl.comparaFloat(precoUnitario*Float.parseFloat(quantidadeDesejada), precoTotal);
 	}
 	
@@ -584,6 +589,16 @@ public class LoginTest {
 		dsl.clicaBotaoGenericoCssSelector("#form-password .col.text-end .btn.btn-primary");
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#alert .alert.alert-success.alert-dismissible")));
 		dsl.comparaStrings("Success: Your password has been successfully updated.", driver.findElement(By.cssSelector("#alert .alert")).getText());
+	}
+	
+	@Test
+	public void deveVerificarHistoricoDePedidos() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		deveEntrarNoLogin();
+		dsl.expandeDropDown("My Account");
+		dsl.clicaBotaoGenericoCssSelector("#top .list-inline-item .dropdown-menu.show a.dropdown-item[href*='route=account/order']");
+		dsl.aguardaTitulo("Orders");
+		dsl.comparaStrings(driver.getTitle(), "Orders");
 	}
 	
 	
