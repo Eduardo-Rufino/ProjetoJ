@@ -354,7 +354,7 @@ public class DSL {
 	
 	//ver uma forma melhor de pegar o produto correto depois
 	//Adiciona um produto ao carrinho
-	public void adicionaProdutoCarrinho(String productId) {
+	public void adicionaProdutoCarrinho() {
         	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             // Localiza o botão "Add to Cart" pelo atributo formaction
             WebElement addToCartButton = wait.until(ExpectedConditions.presenceOfElementLocated(
@@ -370,6 +370,23 @@ public class DSL {
             // Clicar no botão
             addToCartButton.click();
     }
+	
+	public void adicionaProdutoFavorito() {
+    	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        // Localiza o botão "Add to Cart" pelo atributo formaction
+        WebElement addToCartButton = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//button[contains(@formaction, 'wishlist')]")
+        ));
+
+        // Scroll até o botão
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", addToCartButton);
+
+        // Opcional: aguardar até que esteja clicável
+        wait.until(ExpectedConditions.elementToBeClickable(addToCartButton));
+
+        // Clicar no botão
+        addToCartButton.click();
+}
 	
 	public void fechaAlertGenerico(String caminho) {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -554,6 +571,19 @@ public class DSL {
 	    wait.until(ExpectedConditions.invisibilityOfElementLocated(
 	        By.cssSelector("#top a[href*='route=account/logout']")
 	    ));
+	}
+	
+	public boolean produtoEstaNaWishlist(String produto) {
+	    List<WebElement> produtos = driver.findElements(
+	        By.cssSelector("#wishlist tbody td:nth-child(2) a")
+	    );
+
+	    for (WebElement item : produtos) {
+	        if (item.getText().trim().equalsIgnoreCase(produto)) {
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 	
 	

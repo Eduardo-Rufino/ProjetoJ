@@ -200,7 +200,7 @@ public class LoginTest {
 		String produtoEsperado = "iMac";
 		dsl.pesquisaProduto(produtoEsperado);
 		wait.until(ExpectedConditions.titleContains("Search"));
-		dsl.adicionaProdutoCarrinho(produtoEsperado);
+		dsl.adicionaProdutoCarrinho();
 		dsl.fechaAlertCarrinho();
 		dsl.abreDropdownCarrinho();
 		if(dsl.validaProdutoCarrinho(produtoEsperado)) {
@@ -220,11 +220,11 @@ public class LoginTest {
 		String[] listaProdutos = {"iMac", "Samsung SyncMaster 941BW"};
 		dsl.pesquisaProduto(listaProdutos[0]);
 		wait.until(ExpectedConditions.titleContains("Search"));
-		dsl.adicionaProdutoCarrinho(listaProdutos[0]);
+		dsl.adicionaProdutoCarrinho();
 		dsl.fechaAlertCarrinho();
 		dsl.pesquisaProduto(listaProdutos[1]);
 		wait.until(ExpectedConditions.titleContains("Search"));
-		dsl.adicionaProdutoCarrinho(listaProdutos[1]);
+		dsl.adicionaProdutoCarrinho();
 		dsl.fechaAlertCarrinho();
 		dsl.abreDropdownCarrinho();
 		dsl.validaListaProdutosCarrinho(listaProdutos);
@@ -599,6 +599,25 @@ public class LoginTest {
 		dsl.clicaBotaoGenericoCssSelector("#top .list-inline-item .dropdown-menu.show a.dropdown-item[href*='route=account/order']");
 		dsl.aguardaTitulo("Orders");
 		dsl.comparaStrings(driver.getTitle(), "Orders");
+	}
+	
+	@Test
+	public void deveGerenciarListaDeDesejos() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		deveEntrarNoLogin();
+		String produto = "iMac";
+		dsl.pesquisaProduto(produto);
+		dsl.adicionaProdutoFavorito();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#alert .alert.alert-success.alert-dismissible")));
+		dsl.comparaStrings("Success: You have added " + produto + " to your wish list!", driver.findElement(By.cssSelector("#alert .alert.alert-dismissible")).getText());
+		dsl.expandeDropDown("My Account");
+		dsl.clicaBotaoGenericoCssSelector("#top .list-inline-item .dropdown-menu.show a.dropdown-item[href*='route=account/account']");
+		dsl.clicaBotaoGenericoCssSelector("#content a[href*='route=account/wishlist']");
+		Assert.assertTrue(
+			    "Produto não encontrado na wishlist",
+			    dsl.produtoEstaNaWishlist(produto)
+			);
+		
 	}
 	
 	
