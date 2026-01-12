@@ -620,6 +620,25 @@ public class LoginTest {
 		
 	}
 	
+	@Test
+	public void deveAvaliarLogado() {
+		deveEntrarNoLogin();
+		dsl.pesquisaProduto("iMac");
+		dsl.clicaProduto();
+		WebElement reviewsTab = driver.findElement(
+			    By.cssSelector("a[href='#tab-review']")
+			);
+		
+		((JavascriptExecutor) driver).executeScript(
+			    "arguments[0].scrollIntoView({block: 'center'});",
+			    reviewsTab
+			);
+
+			reviewsTab.click();
+			
+		dsl.preencheInputGenerico("input-text", "texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto ");
+		driver.findElement(By.cssSelector("input[type='radio'][name='rating'][value='4']")).click();
+	}
 	
 	@Test
 	public void teste() {
