@@ -637,7 +637,7 @@ public class LoginTest {
 			reviewsTab.click();
 			
 		dsl.preencheInputGenerico("input-text", "texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto ");
-		driver.findElement(By.cssSelector("input[type='radio'][name='rating'][value='4']")).click();
+		driver.findElement(By.cssSelector("input[type='radio'][name='rating'][value='3']")).click();
 	}
 	
 	@Test
