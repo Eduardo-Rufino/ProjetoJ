@@ -193,6 +193,8 @@ public class LoginTest {
 		Assertions.assertTrue(dsl.validaInformacaoProduto("content", "Ex Tax"));		
 	}
 	
+	
+	//Valida se produtos estao sendo adicionados corretramente no carrinho de comprar
 	@Test
 	public void deveAdicionarProdutoCarrinho() {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -211,6 +213,7 @@ public class LoginTest {
 		}
 	}
 	
+	//Valida a listagem de produtos no carrinho funciona corretamente
 	@Test
 	public void deveValidarListaProdutosCarrinho() {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -230,6 +233,7 @@ public class LoginTest {
 		dsl.validaListaProdutosCarrinho(listaProdutos);
 	}
 	
+	// Valida a remocao de itens do carrinho de compras
 	@Test
 	public void deveValidarRemocaoItemCarrinho() {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -241,6 +245,7 @@ public class LoginTest {
 		dsl.validaCarrinhoVazio();
 	}
 	
+	//Valida o botão de atualizacao de itens no carrinho
 	@Test
 	public void deveAtualizarQuantidadeCarrinho() {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -265,6 +270,7 @@ public class LoginTest {
 		dsl.comparaFloat(precoUnitario*Float.parseFloat(quantidadeDesejada), precoTotal);
 	}
 	
+	// Valida se e possivel finalizar uma compra sem itens no carrinho
 	@Test
 	public void deveValidarCompraComCarrinhoVazio() {
 		dsl.expandeDropDown("Shopping Cart");
@@ -272,6 +278,7 @@ public class LoginTest {
 		dsl.validaSeEstaPaginaInicial();
 	}
 	
+	//Valida os valores dos itens presentes no carrinho
 	@Test
 	public void deveValidarSubTotalETotal() {
 		deveAdicionarProdutoCarrinho();
@@ -285,6 +292,7 @@ public class LoginTest {
 		dsl.comparaFloat(totalEsperado, total);
 	}
 	
+	//Valida se a pagina do carrinho esta aberta
 	@Test
 	public void deveValidarVisualizaçãoCarrinho() {
 		dsl.entraCarrinho();
@@ -308,7 +316,7 @@ public class LoginTest {
 	}
 	*/
 	
-	//arrumar erro de nao selecionar o radio de pagamento as vezes.
+	//Finaliza compra com usuario logado e utilizando endereco padrao
 	@Test
 	public void deveFinalizarCompraComUsuarioLogado() {
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -351,7 +359,7 @@ public class LoginTest {
 	    dsl.clicaBotaoGenericoCssSelector("#checkout-payment .text-end .btn.btn-primary");
 	}
 	
-	
+	//Valida mensagem de erro ao tentar alterar informacoes de login com campos vazios
 	@Test
 	public void deveVerificarErroDadoObrigatorio() {
 	    deveEntrarNoLogin();
@@ -367,6 +375,7 @@ public class LoginTest {
 	    dsl.validaCampoObrigatorioGenerico("error-email", "E-Mail Address does not appear to be valid!");
 	}
 	
+	//Valida campos de tipo pagamento e tipo de envio
 	@Test
 	public void deveValidarPagamentoEEnvio() {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
