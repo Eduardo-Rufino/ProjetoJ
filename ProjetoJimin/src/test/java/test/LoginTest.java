@@ -629,8 +629,11 @@ public class LoginTest {
 		
 	}
 	
+	
+	//Submit a review of any product and address the most common error (fewer than 25 characters or more than 100 characters).
 	@Test
 	public void deveAvaliarLogado() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		deveEntrarNoLogin();
 		dsl.pesquisaProduto("iMac");
 		dsl.clicaProduto();
@@ -645,9 +648,30 @@ public class LoginTest {
 
 			reviewsTab.click();
 			
-		dsl.preencheInputGenerico("input-text", "texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto ");
+		dsl.preencheInputGenerico("input-text", "texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto ");
 		driver.findElement(By.cssSelector("input[type='radio'][name='rating'][value='3']")).click();
+		
+		WebElement submitButton = driver.findElement(By.id("button-review"));
+		
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", submitButton);
+		
+		dsl.clicaBotaoGenericoCssSelector("#button-review");		
+		
+		WebElement error = driver.findElement(By.id("error-text"));
+		
+		//System.out.print(error.getText());
+		
+		if(error.getText().contains("Review Text must be between")) {
+			System.out.print(error.getText());
+			dsl.comparaStrings("Review Text must be between 25 and 1000 characters!", error.getText());
+		}
+		else {
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#alert .alert")));
+			dsl.comparaStrings("Thank you for your review. It has been submitted to the webmaster for approval.", driver.findElement(By.cssSelector("#alert .alert")).getText());
+		}
+		
 	}
+	
 	
 	@Test
 	public void teste() {
