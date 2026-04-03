@@ -586,6 +586,36 @@ public class DSL {
 	    return false;
 	}
 	
+	public List<String> retornaErrosFormulario(){
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+	    By erroLocator = By.cssSelector(".invalid-feedback");
+	    By sucessoLocator = By.cssSelector("#alert .alert");
+
+	    // espera até aparecer erro OU sucesso
+	    wait.until(driver -> 
+	        driver.findElements(erroLocator).stream().anyMatch(e -> !e.getText().isBlank()) ||
+	        !driver.findElements(sucessoLocator).isEmpty()
+	    );
+		
+	    return driver.findElements(erroLocator).stream()
+	            .map(WebElement::getText)
+	            .filter(texto -> !texto.isBlank())
+	            .toList();
+	}
+	
+	/*
+	public List<String> retornaErrosFormulario(){
+		By errorLocator = By.cssSelector(".invalid-feedback");
+		
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		
+		wait.until(driver -> driver.findElements(errorLocator).stream().anyMatch(e -> !e.getText().isBlank()));
+		
+		return driver.findElements(errorLocator).stream().map(WebElement::getText).filter(texto -> !texto.isBlank()).toList();
+	}
+	*/
+	
 	
 	/*
 	public float retornaValorCarrinho() {

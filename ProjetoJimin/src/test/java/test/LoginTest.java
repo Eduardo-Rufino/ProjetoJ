@@ -657,18 +657,158 @@ public class LoginTest {
 		
 		dsl.clicaBotaoGenericoCssSelector("#button-review");		
 		
-		WebElement error = driver.findElement(By.id("error-text"));
-		
-		//System.out.print(error.getText());
-		
-		if(error.getText().contains("Review Text must be between")) {
-			System.out.print(error.getText());
-			dsl.comparaStrings("Review Text must be between 25 and 1000 characters!", error.getText());
+		List<String> erros = dsl.retornaErrosFormulario();
+
+		Assert.assertTrue(
+		    "Não deveriam existir erros: " + erros,
+		    erros.isEmpty()
+		);
+
+		String sucesso = driver.findElement(By.cssSelector("#alert .alert")).getText();
+
+		dsl.comparaStrings(
+		    "Thank you for your review. It has been submitted to the webmaster for approval.",
+		    sucesso
+		);
 		}
-		else {
-			wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#alert .alert")));
-			dsl.comparaStrings("Thank you for your review. It has been submitted to the webmaster for approval.", driver.findElement(By.cssSelector("#alert .alert")).getText());
-		}
+
+	
+	
+	@Test
+	public void deveAvaliarVisitante() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		
+		dsl.pesquisaProduto("iMac");
+		dsl.clicaProduto();
+		WebElement reviewsTab = driver.findElement(
+			    By.cssSelector("a[href='#tab-review']")
+			);
+		
+		((JavascriptExecutor) driver).executeScript(
+			    "arguments[0].scrollIntoView({block: 'center'});",
+			    reviewsTab
+			);
+
+			reviewsTab.click();
+			
+		dsl.preencheInputGenerico("input-author", "Nome Sobrenome");
+		dsl.preencheInputGenerico("input-text", "texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto ");
+		driver.findElement(By.cssSelector("input[type='radio'][name='rating'][value='3']")).click();
+		
+		WebElement submitButton = driver.findElement(By.id("button-review"));
+		
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", submitButton);
+		
+		dsl.clicaBotaoGenericoCssSelector("#button-review");		
+		
+		List<String> erros = dsl.retornaErrosFormulario();
+
+		Assert.assertTrue(
+		    "Não deveriam existir erros: " + erros,
+		    erros.isEmpty()
+		);
+
+		String sucesso = driver.findElement(By.cssSelector("#alert .alert")).getText();
+
+		dsl.comparaStrings(
+		    "Thank you for your review. It has been submitted to the webmaster for approval.",
+		    sucesso
+		);
+	}
+	
+	@Test
+	public void deveFalharAvaliaccao() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		
+		dsl.pesquisaProduto("iMac");
+		dsl.clicaProduto();
+		WebElement reviewsTab = driver.findElement(
+			    By.cssSelector("a[href='#tab-review']")
+			);
+		
+		((JavascriptExecutor) driver).executeScript(
+			    "arguments[0].scrollIntoView({block: 'center'});",
+			    reviewsTab
+			);
+
+			reviewsTab.click();
+			
+		dsl.preencheInputGenerico("input-author", "Nome Sobrenome");
+		dsl.preencheInputGenerico("input-text", "texto texto");
+		driver.findElement(By.cssSelector("input[type='radio'][name='rating'][value='3']")).click();
+		
+		WebElement submitButton = driver.findElement(By.id("button-review"));
+		
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", submitButton);
+		
+		dsl.clicaBotaoGenericoCssSelector("#button-review");		
+		
+		List<String> erros = dsl.retornaErrosFormulario();
+
+		Assert.assertFalse(
+		    "Eram esperados erros de validação: ",
+		    erros.isEmpty()
+		);
+	}
+	
+	@Test
+	public void deveEnviarContato() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		
+		dsl.clicaBotaoGenericoCssSelector(".col.text-end .list-inline .list-inline-item a[href*='route=information/contact']");
+		
+		wait.until(ExpectedConditions.urlContains("route=information/contact"));
+		
+		dsl.preencheInputGenerico("input-name", "nome sobrenome");
+		
+		dsl.preencheInputGenerico("input-email", "teste@teste.com");
+		
+		dsl.preencheInputGenerico("input-enquiry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sagittis consequat pulvinar. Pellentesque malesuada maximus nunc non cursus. Sed sed scelerisque nisi. Vivamus vel sapien nunc.");
+		
+		WebElement submitButton = driver.findElement(
+			    By.cssSelector("#form-contact .text-end .btn.btn-primary")
+			);
+		
+		((JavascriptExecutor) driver).executeScript(
+			    "arguments[0].scrollIntoView({block: 'center'});",
+			    submitButton
+			);
+
+			dsl.clicaBotaoGenericoCssSelector("#form-contact .text-end .btn.btn-primary");
+			
+		wait.until(ExpectedConditions.urlContains("route=information/contact.success"));
+		
+		dsl.comparaStrings("Your enquiry has been successfully sent to the store owner!", driver.findElement(By.cssSelector("#content p")).getText());
+		
+	}
+	
+	@Test
+	public void deveEnviarContatoSemDados() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		
+		dsl.clicaBotaoGenericoCssSelector(".col.text-end .list-inline .list-inline-item a[href*='route=information/contact']");
+		
+		wait.until(ExpectedConditions.urlContains("route=information/contact"));
+		
+		WebElement submitButton = driver.findElement(
+			    By.cssSelector("#form-contact .text-end .btn.btn-primary")
+			);
+		
+		((JavascriptExecutor) driver).executeScript(
+			    "arguments[0].scrollIntoView({block: 'center'});",
+			    submitButton
+			);
+
+		dsl.clicaBotaoGenericoCssSelector("#form-contact .text-end .btn.btn-primary");
+		
+		List<String> erros = dsl.retornaErrosFormulario();
+
+	    Assert.assertFalse(
+	        "Esperava erros de validação, mas não houve nenhum",
+	        erros.isEmpty()
+	    );
+	    
+	    erros.forEach(System.out::println);	    
 		
 	}
 	
