@@ -1,5 +1,6 @@
 package DSL;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.time.Duration;
@@ -303,8 +304,15 @@ public class DSL {
 	
 	// recebe o nome de um produto, escreve ele na caixa de pesquisa e clica no botao de pesquisar
 	public void pesquisaProduto(String produto) {
-		WebElement input = driver.findElement(By.cssSelector(".input-group.mb-3 .form-control.form-control-lg"));
-		input.sendKeys(produto);
+		WebElement searchInput = driver.findElement(By.cssSelector(".input-group.mb-3 .form-control.form-control-lg"));
+		
+		
+		((JavascriptExecutor) driver).executeScript(
+			    "arguments[0].scrollIntoView({block: 'center'});",
+			    searchInput
+			);
+		
+		searchInput.sendKeys(produto);
 		WebElement botao = driver.findElement(By.cssSelector(".input-group.mb-3 .btn.btn-light.btn-lg"));
 		botao.click();
 	}
@@ -370,6 +378,14 @@ public class DSL {
             // Clicar no botão
             addToCartButton.click();
     }
+	
+	public void adicionaProdutoComparacao() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		
+		WebElement addToCompareButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@formaction, 'compare.add')]")));		
+		
+		addToCompareButton.click();
+	}
 	
 	public void adicionaProdutoFavorito() {
     	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -491,11 +507,14 @@ public class DSL {
 		botao.click();
 	}
 	
-	public void clicaBotaoGenericoCssSelector(String caminhoBotao) {
+	public void clicaBotaoGenericoCssSelector(By locator) {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(caminhoBotao)));
-		WebElement botao = driver.findElement(By.cssSelector(caminhoBotao));
-		botao.click();
+
+	    WebElement botao = wait.until(
+	        ExpectedConditions.elementToBeClickable(locator)
+	    );
+
+	    botao.click();
 	}
 	
 	public void validaSeEstaPaginaInicial() {
@@ -529,8 +548,9 @@ public class DSL {
 	    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", elemento);
 	}
 	
-	public void limpaInputGenerico(String Caminho) {
-		WebElement input = driver.findElement(By.id(Caminho));
+	public void limpaInputGenerico(By Locator) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebElement input = driver.findElement(Locator);
 		input.clear();
 	}
 	
@@ -602,6 +622,34 @@ public class DSL {
 	            .map(WebElement::getText)
 	            .filter(texto -> !texto.isBlank())
 	            .toList();
+	}
+	
+	public void scrollToElement(String Element) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(Element)));
+		WebElement element = driver.findElement(By.cssSelector(Element));
+		
+		
+		((JavascriptExecutor) driver).executeScript(
+			    "arguments[0].scrollIntoView({block: 'center'});",
+			    element
+			);
+	}
+	
+	public List<String> retornaLabelComparacao(String Label) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		List<String> valores = new ArrayList<>();
+		
+		WebElement linha = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//table//tr[td[1][normalize-space()='" + Label + "']]")));
+		
+		List<WebElement> colunas = linha.findElements(By.tagName("td"));
+		
+		for(int i = 1; i < colunas.size(); i++) {
+			valores.add(colunas.get(i).getText().trim());
+		}
+		
+		return valores;
 	}
 	
 	/*
