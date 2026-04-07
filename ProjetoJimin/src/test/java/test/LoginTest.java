@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -12,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -106,27 +109,6 @@ public class LoginTest {
 		dsl.comparaStrings("My Wishlist", dsl.retornaTitulo());
 		dsl.clicaCarrinho();
 		dsl.comparaStrings("Shopping Cart", dsl.retornaTitulo());
-		dsl.clicaMoeda();
-		dsl.trocaMoeda("Dolar");
-		wait.until(ExpectedConditions.textToBePresentInElementLocated(
-				By.cssSelector("div.dropdown a strong"), "$"
-			 )
-		);
-		dsl.comparaStrings("$", dsl.retornaMoeda());
-		dsl.clicaMoeda();
-		dsl.trocaMoeda("Libra");
-		wait.until(ExpectedConditions.textToBePresentInElementLocated(
-					 By.cssSelector("div.dropdown a strong"), "£"
-			 )
-		);
-		dsl.comparaStrings("£", dsl.retornaMoeda());
-		dsl.clicaMoeda();
-		dsl.trocaMoeda("Euro");
-		wait.until(ExpectedConditions.textToBePresentInElementLocated(
-					 By.cssSelector("div.dropdown a strong"), "€"
-			 )
-		);
-		dsl.comparaStrings("€", dsl.retornaMoeda());
 	}
 	
 	// Verifica cada uma das categorias principais da pagina e quais subcategorias tem produtos cadastrados
@@ -851,6 +833,51 @@ public class LoginTest {
 		//System.out.println(alerta);
 		dsl.comparaStrings("Success: Your newsletter subscription has been successfully updated!", alerta);
 		
+	}
+	
+	@Test
+	public void deveValidarMoeda() {
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+	    Map<String, String> moedas = new LinkedHashMap<>();
+	    moedas.put("US Dollar", "$");
+	    moedas.put("Pound Sterling", "£");
+	    moedas.put("Euro", "€");
+
+	    for (Map.Entry<String, String> moeda : moedas.entrySet()) {
+
+	        // Abre dropdown de moeda
+	        dsl.clicaMoeda();
+
+	        // Troca moeda usando o texto visível
+	        dsl.trocaMoeda(moeda.getKey());
+
+	        // Espera o símbolo atualizar na tela
+	        String simboloAtual = wait.until(
+	            ExpectedConditions.visibilityOfElementLocated(
+	                By.cssSelector("div.dropdown a strong")
+	            )
+	        ).getText();
+
+	        // Validação
+	        Assert.assertEquals(moeda.getValue(), simboloAtual);
+	    }
+	}
+	
+	@Test
+	public void deveValidarResponsividade() {
+		dsl.alteraTamanhoJanela(375, 812);
+		
+		WebElement telaMobile = driver.findElement(By.cssSelector(".navbar-toggler"));
+		Assert.assertTrue(telaMobile.isDisplayed());
+		
+		List<WebElement> telaDesktop = driver.findElements(By.cssSelector(".nav.navbar-nav"));
+		Assert.assertTrue(telaDesktop.isEmpty() || !telaDesktop.get(0).isDisplayed());
+		
+		driver.manage().window().setSize(new Dimension(1920, 1080));
+
+	    WebElement menuCompleto = driver.findElement(By.cssSelector(".nav.navbar-nav"));
+	    Assert.assertTrue(menuCompleto.isDisplayed());
 	}
 	
 	

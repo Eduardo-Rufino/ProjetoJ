@@ -7,6 +7,7 @@ import java.time.Duration;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -160,18 +161,16 @@ public class DSL {
 	
 	
 	// depois de aberta a lista de moedas disponivel, seleciona uma delas de acordo com a String recebida
-	public void trocaMoeda(String moeda) {
-		WebElement botao = null;
-		if(moeda == "Euro") {
-			botao = driver.findElement(By.xpath("//a[@href='EUR']"));
-		}
-		if(moeda == "Libra") {
-			botao = driver.findElement(By.xpath("//a[@href='GBP']"));
-		}
-		if(moeda == "Dolar") {
-			botao = driver.findElement(By.xpath("//a[@href='USD']"));
-		}
-		botao.click();
+	public void trocaMoeda(String moedaTexto) {
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+	    WebElement elemento = wait.until(
+	        ExpectedConditions.elementToBeClickable(
+	            By.xpath("//form[@id='form-currency']//a[contains(., '" + moedaTexto + "')]")
+	        )
+	    );
+
+	    elemento.click();
 	}
 	
 	// Retorna o icone da moeda selecionada na barra superior da pagina
@@ -650,6 +649,10 @@ public class DSL {
 		}
 		
 		return valores;
+	}
+	
+	public void alteraTamanhoJanela(int height, int width) {
+		driver.manage().window().setSize(new Dimension(height, width));
 	}
 	
 	/*
