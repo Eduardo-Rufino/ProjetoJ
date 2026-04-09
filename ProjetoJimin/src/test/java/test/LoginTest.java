@@ -655,7 +655,7 @@ public class LoginTest {
 		    "Thank you for your review. It has been submitted to the webmaster for approval.",
 		    sucesso
 		);
-		}
+	}
 
 	
 	
