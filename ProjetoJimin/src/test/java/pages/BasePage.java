@@ -53,6 +53,10 @@ public class BasePage {
     	wait.until(ExpectedConditions.titleIs(title));
     }
     
+    public void waitElementSelected(By by) {
+    	wait.until(ExpectedConditions.elementToBeSelected(by));
+    }
+    
     protected String getText(By by) {
         return waitForVisibility(by).getText();
     }

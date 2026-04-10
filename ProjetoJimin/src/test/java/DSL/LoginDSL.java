@@ -1,7 +1,4 @@
 package DSL;
-
-import org.junit.Assert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 
@@ -27,6 +24,14 @@ public class LoginDSL {
 		loginPage.waitForLoginPage();
 		loginPage.login(email, password);
 		loginPage.waitForTitle("My Account");
+	}
+	
+	public void mustRegister(String fisrtName, String lastName, String email, String password) {
+		header.expandMyAccount();
+		header.goToRegister();
+		loginPage.waitForRegisterPage();
+		loginPage.register(fisrtName, lastName, email, password);
+		loginPage.waitForTitle("Your Account Has Been Created!");
 	}
 	
 	public void mustLogin() {

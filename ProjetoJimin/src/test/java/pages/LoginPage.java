@@ -10,11 +10,17 @@ public class LoginPage extends BasePage{
 		super(driver);
 	}
 	
+	private String firstName = "First";
+	private String lastName = "Last";
 	private String standardEmail = "teste@teste.com";
 	private String standardPassword = "teste123";
 	private By loginButton = By.cssSelector("#form-login .text-end .btn.btn-primary");
 	private By emailInput = By.id("input-email");
 	private By passwordInput = By.id("input-password");
+	private By firstNameInput = By.id("input-firstname");
+	private By lastNameInput = By.id("input-lastname");
+	private By privacyPoliceCheck = By.cssSelector("#form-register .text-end .form-check-input");
+	private By registerButton = By.cssSelector("#form-register .btn.btn-primary");
 	
 	public void login() {
 		write(emailInput, standardEmail);
@@ -28,9 +34,33 @@ public class LoginPage extends BasePage{
 		click(loginButton);
 	}
 	
+	public void register() {
+		write(firstNameInput, firstName);
+		write(lastNameInput, lastName);
+		write(emailInput, standardEmail);
+		write(passwordInput, standardPassword);
+		click(registerButton);
+		click(privacyPoliceCheck);
+	}
+	
+	public void register(String firstName, String lastName, String email, String password) {
+		write(firstNameInput, firstName);
+		write(lastNameInput, lastName);
+		write(emailInput, email);
+		write(passwordInput, password);
+		click(privacyPoliceCheck);
+		waitElementSelected(privacyPoliceCheck);
+		click(registerButton);
+	}
+	
 	public void waitForLoginPage() {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(emailInput));
 	    wait.until(ExpectedConditions.elementToBeClickable(loginButton));
+	}
+	
+	public void waitForRegisterPage() {
+		wait.until(ExpectedConditions.visibilityOfElementLocated(firstNameInput));
+		wait.until(ExpectedConditions.elementToBeClickable(registerButton));
 	}
 	
 }

@@ -9,8 +9,9 @@ public class HeaderComponent extends BasePage{
 		super(driver);
 	}
 	
-	private By myAccountDropdown = By.xpath("//*[text()='My Account ']");
+	private By myAccountDropdown = By.cssSelector("#top .col.text-end .dropdown-toggle");
 	private By goToLoginButton = By.cssSelector("#top a.dropdown-item[href*='route=account/login']");
+	private By goToRegisterButton = By.cssSelector("#top a.dropdown-item[href*='route=account/register");
 	
 	
 	public void expandMyAccount() {
@@ -21,6 +22,8 @@ public class HeaderComponent extends BasePage{
 		click(goToLoginButton);
 	}
 	
-	
+	public void goToRegister() {
+		click(goToRegisterButton);
+	}
 	
 }
