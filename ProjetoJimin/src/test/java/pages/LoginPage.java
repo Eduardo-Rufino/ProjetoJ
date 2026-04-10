@@ -1,16 +1,44 @@
 package pages;
 
-import org.junit.Assert;
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import DSL.DSL;
+public class LoginPage extends BasePage{
 
-
-public class LoginPage {
-
+	public LoginPage(WebDriver driver) {
+		super(driver);
+	}
+	
+	private String standardEmail = "teste@teste.com";
+	private String standardPassword = "teste123";
+	private By loginButton = By.cssSelector("#form-login .text-end .btn.btn-primary");
+	private By emailInput = By.id("input-email");
+	private By passwordInput = By.id("input-password");
+	
+	public void login() {
+		write(emailInput, standardEmail);
+		write(passwordInput, standardPassword);
+		click(loginButton);
+	}
+	
+	public void login(String email, String password) {
+		write(emailInput, email);
+		write(passwordInput, password);
+		click(loginButton);
+	}
+	
+	public void waitForLoginPage() {
+		wait.until(ExpectedConditions.visibilityOfElementLocated(emailInput));
+	    wait.until(ExpectedConditions.elementToBeClickable(loginButton));
+	}
+	
+}
+	
+	
+	
+	
+	/*
 	private WebDriver driver;
 	
 	private DSL dsl;
@@ -30,7 +58,7 @@ public class LoginPage {
 	}
 	
 	
-	/*
+	--------------------------------------------------------------------------------------------------------
 	@Test
 	public void clicaLogin() {
 		dsl.clicaSpan("d-none d-lg-inline");
@@ -38,4 +66,4 @@ public class LoginPage {
 		Assert.assertEquals("Account Login", driver.findElement(By.tagName("title")));
 	}
 	*/
-}
+

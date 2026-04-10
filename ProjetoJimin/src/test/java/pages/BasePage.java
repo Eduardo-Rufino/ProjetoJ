@@ -49,7 +49,15 @@ public class BasePage {
     	return wait.until(ExpectedConditions.elementToBeClickable(by));
     }
     
+    public void waitForTitle(String title) {
+    	wait.until(ExpectedConditions.titleIs(title));
+    }
+    
     protected String getText(By by) {
         return waitForVisibility(by).getText();
+    }
+    
+    public String getTitle() {
+    	return driver.getTitle();
     }
 }
