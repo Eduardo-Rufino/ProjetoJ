@@ -18,23 +18,29 @@ public class LoginDSL {
         this.homePage = new HomePage(driver);
     }
 	
-	public void mustLogin(String email, String password) {
+	public void login(String email, String password) {
 		header.expandMyAccount();
 		header.goToLogin();
 		loginPage.waitForLoginPage();
 		loginPage.login(email, password);
-		loginPage.waitForTitle("My Account");
 	}
 	
-	public void mustRegister(String fisrtName, String lastName, String email, String password) {
+	public void loginWithDefaultUser() {
+	    login("teste@teste.com", "teste123");
+	}
+	
+	public void register(String firstName, String lastName, String email, String password) {
 		header.expandMyAccount();
 		header.goToRegister();
 		loginPage.waitForRegisterPage();
-		loginPage.register(fisrtName, lastName, email, password);
-		loginPage.waitForTitle("Your Account Has Been Created!");
+		loginPage.register(firstName, lastName, email, password);
 	}
 	
-	public void mustLogin() {
-	    mustLogin("teste@teste.com", "teste123");
+	public void recoverPassword() {
+		header.expandMyAccount();
+		header.goToLogin();
+		loginPage.waitForLoginPage();
+		loginPage.recoverPassword();
 	}
+	
 }

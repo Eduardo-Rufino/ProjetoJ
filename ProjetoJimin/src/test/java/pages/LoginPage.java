@@ -21,6 +21,10 @@ public class LoginPage extends BasePage{
 	private By lastNameInput = By.id("input-lastname");
 	private By privacyPoliceCheck = By.cssSelector("#form-register .text-end .form-check-input");
 	private By registerButton = By.cssSelector("#form-register .btn.btn-primary");
+	private By loginErrorMessage = By.cssSelector("#alert .alert.alert-danger.alert-dismissible");
+	private By forgottenPasswordButton = By.cssSelector("#form-login a[href*='route=account/forgotten']");
+	private By recoverPasswordButton = By.cssSelector("#form-forgotten .text-end .btn.btn-primary");
+	private By recoveryPasswordAlert = By.cssSelector("#account-login .alert");
 	
 	public void login() {
 		write(emailInput, standardEmail);
@@ -53,6 +57,12 @@ public class LoginPage extends BasePage{
 		click(registerButton);
 	}
 	
+	public void recoverPassword() {
+		click(forgottenPasswordButton);
+		write(emailInput, standardEmail);
+		click(recoverPasswordButton);
+	}
+	
 	public void waitForLoginPage() {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(emailInput));
 	    wait.until(ExpectedConditions.elementToBeClickable(loginButton));
@@ -63,6 +73,15 @@ public class LoginPage extends BasePage{
 		wait.until(ExpectedConditions.elementToBeClickable(registerButton));
 	}
 	
+	public String getLoginErrorMessage() {
+		waitForVisibility(loginErrorMessage);
+		return getText(loginErrorMessage);
+	}
+	
+	public String getPasswordRecoverySuccessMessage() {
+		waitForVisibility(recoveryPasswordAlert);
+		return getText(recoveryPasswordAlert);
+	}
 }
 	
 	
