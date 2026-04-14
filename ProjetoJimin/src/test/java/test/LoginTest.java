@@ -3,6 +3,7 @@ package test;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 import base.BaseTest;
 import pages.LoginPage;
@@ -34,7 +35,7 @@ public class LoginTest extends BaseTest {
 	
 	@Test
 	public void shouldRegisterSuccessfullyWithValidCredentials() {		
-		loginDSL.register("First", "Last", "teste35@teste.com", "teste123");
+		loginDSL.register("First", "Last", "teste36@teste.com", "teste123");
 		loginPage.waitForTitle("Your Account Has Been Created!");
 		Assert.assertEquals("Your Account Has Been Created!", loginPage.getTitle());
 	}	
@@ -50,6 +51,13 @@ public class LoginTest extends BaseTest {
 		loginDSL.recoverPassword();
 		loginPage.waitForTitle("Account Login");
 		Assert.assertTrue(loginPage.getPasswordRecoverySuccessMessage().contains("success"));
+	}
+	
+	@Test
+	public void shouldLogoffSuccefully() {
+		loginDSL.login("teste@teste.com", "teste123");
+		loginDSL.logout();
+		Assert.assertTrue(loginPage.getLogoutMessage().contains("have been logged off"));
 	}
 	
 }

@@ -11,7 +11,8 @@ public class HeaderComponent extends BasePage{
 	
 	private By myAccountDropdown = By.cssSelector("#top .col.text-end .dropdown-toggle");
 	private By goToLoginButton = By.cssSelector("#top a.dropdown-item[href*='route=account/login']");
-	private By goToRegisterButton = By.cssSelector("#top a.dropdown-item[href*='route=account/register");
+	private By goToRegisterButton = By.cssSelector("#top a.dropdown-item[href*='route=account/register']");
+	private By logoutButton = By.cssSelector("#top a.dropdown-item[href*='route=account/logout']");
 	
 	
 	public void expandMyAccount() {
@@ -24,6 +25,11 @@ public class HeaderComponent extends BasePage{
 	
 	public void goToRegister() {
 		click(goToRegisterButton);
+	}
+	
+	public void logout() {
+		click(myAccountDropdown);
+		waitForVisibility(logoutButton).click();
 	}
 	
 }

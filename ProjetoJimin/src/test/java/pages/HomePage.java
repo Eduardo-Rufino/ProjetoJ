@@ -10,9 +10,15 @@ public class HomePage extends BasePage{
 	}
 	
 	private By homePageButton = By.cssSelector("#logo a");
+	private By activeCarouselImage = By.cssSelector("#carousel-banner-0 .carousel-item.active img");
 	
 	public void returnToHomePage() {
 		click(homePageButton);
 	}
+	
+	public String getCarouselImageSrc() {
+		return waitForVisibility(activeCarouselImage).getAttribute("src");
+	}
+	
 	
 }

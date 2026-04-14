@@ -3,19 +3,16 @@ import org.openqa.selenium.WebDriver;
 
 
 import pages.HeaderComponent;
-import pages.HomePage;
 import pages.LoginPage;
 
 public class LoginDSL {
 	
 	private HeaderComponent header;
 	private LoginPage loginPage;
-	private HomePage homePage;
 	
 	public LoginDSL(WebDriver driver) {
         this.header = new HeaderComponent(driver);
         this.loginPage = new LoginPage(driver);
-        this.homePage = new HomePage(driver);
     }
 	
 	public void login(String email, String password) {
@@ -23,6 +20,7 @@ public class LoginDSL {
 		header.goToLogin();
 		loginPage.waitForLoginPage();
 		loginPage.login(email, password);
+		loginPage.waitForMyAccountPage();
 	}
 	
 	public void loginWithDefaultUser() {
@@ -41,6 +39,10 @@ public class LoginDSL {
 		header.goToLogin();
 		loginPage.waitForLoginPage();
 		loginPage.recoverPassword();
+	}
+	
+	public void logout() {
+		header.logout();	
 	}
 	
 }

@@ -1,7 +1,10 @@
 package pages;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class LoginPage extends BasePage{
@@ -15,6 +18,7 @@ public class LoginPage extends BasePage{
 	private String standardEmail = "teste@teste.com";
 	private String standardPassword = "teste123";
 	private By loginButton = By.cssSelector("#form-login .text-end .btn.btn-primary");
+	private By passwordButton = By.cssSelector("#column-right .list-group.mb-3 a[href*='route=account/password']");
 	private By emailInput = By.id("input-email");
 	private By passwordInput = By.id("input-password");
 	private By firstNameInput = By.id("input-firstname");
@@ -25,6 +29,8 @@ public class LoginPage extends BasePage{
 	private By forgottenPasswordButton = By.cssSelector("#form-login a[href*='route=account/forgotten']");
 	private By recoverPasswordButton = By.cssSelector("#form-forgotten .text-end .btn.btn-primary");
 	private By recoveryPasswordAlert = By.cssSelector("#account-login .alert");
+	private By logoutMessage = By.xpath("//div[@id='content']//p[contains(text(),'logged off')]");
+	private By myAccountDropdown = By.cssSelector("#top .col.text-end .dropdown-toggle");
 	
 	public void login() {
 		write(emailInput, standardEmail);
@@ -73,6 +79,10 @@ public class LoginPage extends BasePage{
 		wait.until(ExpectedConditions.elementToBeClickable(registerButton));
 	}
 	
+	public void waitForMyAccountPage() {
+		wait.until(ExpectedConditions.elementToBeClickable(passwordButton));
+	}
+	
 	public String getLoginErrorMessage() {
 		waitForVisibility(loginErrorMessage);
 		return getText(loginErrorMessage);
@@ -81,6 +91,11 @@ public class LoginPage extends BasePage{
 	public String getPasswordRecoverySuccessMessage() {
 		waitForVisibility(recoveryPasswordAlert);
 		return getText(recoveryPasswordAlert);
+	}
+	
+	public String getLogoutMessage() {
+		waitForVisibility(logoutMessage);
+		return getText(logoutMessage);
 	}
 }
 	
