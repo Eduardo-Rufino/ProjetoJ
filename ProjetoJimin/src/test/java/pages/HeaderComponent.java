@@ -13,7 +13,9 @@ public class HeaderComponent extends BasePage{
 	private By goToLoginButton = By.cssSelector("#top a.dropdown-item[href*='route=account/login']");
 	private By goToRegisterButton = By.cssSelector("#top a.dropdown-item[href*='route=account/register']");
 	private By logoutButton = By.cssSelector("#top a.dropdown-item[href*='route=account/logout']");
-	
+	private By contactUsButton = By.xpath("//li[@class='list-inline-item']//span[@class='d-none d-lg-inline']");
+	private By wishListButton = By.id("wishlist-total");
+	private By cartButton = By.xpath("//li[@class='list-inline-item']//a[@title='Shopping Cart']");
 	
 	public void expandMyAccount() {
 		click(myAccountDropdown);
@@ -32,4 +34,15 @@ public class HeaderComponent extends BasePage{
 		waitForVisibility(logoutButton).click();
 	}
 	
+	public void goToContactUs() {
+		click(contactUsButton);
+	}
+	
+	public void goToWishList() {
+		click(wishListButton);
+	}
+	
+	public void goToCart() {
+		click(cartButton);
+	}
 }

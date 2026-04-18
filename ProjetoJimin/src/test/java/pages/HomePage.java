@@ -20,5 +20,11 @@ public class HomePage extends BasePage{
 		return waitForVisibility(activeCarouselImage).getAttribute("src");
 	}
 	
+	public void waitForCarouselImageToChange(String previousImage) {
+		wait.until(driver -> {
+			String currentImage = getCarouselImageSrc();
+			return !currentImage.equals(previousImage);
+		});
+	}
 	
 }
