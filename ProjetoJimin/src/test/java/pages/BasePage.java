@@ -1,6 +1,7 @@
 package pages;
 
 import java.time.Duration;
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -47,6 +48,10 @@ public class BasePage {
     
     protected WebElement waitForClickable(By by) {
     	return wait.until(ExpectedConditions.elementToBeClickable(by));
+    }
+    
+    protected List<WebElement> waitForAllVisible(By by) {
+        return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(by));
     }
     
     public void waitForTitle(String title) {

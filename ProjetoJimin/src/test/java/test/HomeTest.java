@@ -1,5 +1,9 @@
 package test;
 
+
+
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,17 +12,20 @@ import org.openqa.selenium.By;
 import base.BaseTest;
 import pages.HeaderComponent;
 import pages.HomePage;
+import DSL.HomeDSL;
 import DSL.LoginDSL;
 
 public class HomeTest extends BaseTest {
 	
 	private LoginDSL loginDSL;
+	private HomeDSL homeDSL;
 	private HomePage homePage;
 	private HeaderComponent headerComponent;
 	
 	@Before
 	public void setupTest() {
 		loginDSL = new LoginDSL(driver);
+		homeDSL = new HomeDSL(driver);
 		homePage = new HomePage(driver);
 		headerComponent = new HeaderComponent(driver);
 	}
@@ -50,5 +57,15 @@ public class HomeTest extends BaseTest {
 		headerComponent.goToCart();
 		Assert.assertEquals("Shopping Cart", homePage.getTitle());
 	}
+	
+	@Test
+	public void shouldNavigateThroughAllCategories() {
+	    List<String> pages = homeDSL.navigateThroughAllCategories();
+
+	    for (String title : pages) {
+	        Assert.assertFalse(title.isEmpty());
+	    }
+	}
+	
 	
 }
